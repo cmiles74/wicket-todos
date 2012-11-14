@@ -16,13 +16,32 @@ public class ContextJpaDaoTest
     ContextJpaDao contextJpaDao = null;
 
     @Test
-    public void testCreateContext() {
+    public void testCreateAndRemoveContext() {
+
+	// create a context
+	Context context = new Context();
+	context.setName("Office");
+	context.setDescription("Wherever my laptop is.");
+	context = contextJpaDao.persistContext(context);
+	Assert.assertNotNull(context.getId());
+
+	// remove a context
+	contextJpaDao.removeContext(context);
+	context = contextJpaDao.getContext(context.getId());
+	Assert.assertNull(context);
+    }
+
+    @Test
+    public void testGetContext() {
 
 	Context context = new Context();
 	context.setName("Office");
 	context.setDescription("Wherever my laptop is.");
 	context = contextJpaDao.persistContext(context);
 
-	Assert.assertNotNull(context.getId());
+	Context contextFetched = contextJpaDao.getContext(context.getId());
+	Assert.assertNotNull(contextFetched);
+
+	contextJpaDao.removeContext(context);
     }
 }
