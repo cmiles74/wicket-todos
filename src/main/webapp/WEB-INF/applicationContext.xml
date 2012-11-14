@@ -35,18 +35,30 @@
   <bean class="org.springframework.beans.factory.annotation.AutowiredAnnotationBeanPostProcessor"/>
 
   <beans profile="default">
-    <bean id="dataSource"
+    <context:property-placeholder location="classpath:default.properties"
+				  system-properties-mode="OVERRIDE"/>
+    <bean id="defaultDataSource"
 	  class="org.springframework.jdbc.datasource.DriverManagerDataSource">
-      <property name="driverClassName" value="org.apache.derby.jdbc.EmbeddedDriver"/>
-      <property name="url" value="jdbc:derby:data/todos;create=true"/>
+      <property name="driverClassName" value="${jdbc.driverName}"/>
+      <property name="url" value="${jdbc.url}"/>
+      <property name="username" value="${jdbc.username}"/>
+      <property name="password" value="${jdbc.password}"/>
     </bean>
+    <jee:jndi-lookup id="dataSource"
+		     jndi-name="/jdbc/todosDataSource"
+		     resource-ref="true"
+		     default-ref="defaultDataSource"/>
   </beans>
 
   <beans profile="test">
+    <context:property-placeholder location="classpath:test.properties"
+				  system-properties-mode="OVERRIDE"/>
     <bean id="dataSource"
 	  class="org.springframework.jdbc.datasource.DriverManagerDataSource">
-      <property name="driverClassName" value="org.apache.derby.jdbc.EmbeddedDriver"/>
-      <property name="url" value="jdbc:derby:memory:todos;create=true"/>
+      <property name="driverClassName" value="${jdbc.driverName}"/>
+      <property name="url" value="${jdbc.url}"/>
+      <property name="username" value="${jdbc.username}"/>
+      <property name="password" value="${jdbc.password}"/>
     </bean>
   </beans>
 </beans>
