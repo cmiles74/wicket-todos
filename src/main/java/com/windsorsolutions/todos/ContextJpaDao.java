@@ -10,27 +10,27 @@ public class ContextJpaDao implements ContextDao{
     @PersistenceContext
     private EntityManager entityManager = null;
 
-    public Context persistContext(Context context) {
+    public Context persist(Context context) {
 	entityManager.persist(context);
 	return(context);
     }
 
-    public void removeContext(Context context) {
+    public void remove(Context context) {
 	entityManager.remove(context);
     }
 
-    public Context mergeContext(Context context) {
+    public Context merge(Context context) {
 	Context contextMerged = entityManager.merge(context);
 	return(contextMerged);
     }
 
-    public Context getContext(Long id) {
+    public Context get(Long id) {
 	Context todo = entityManager.find(Context.class, id);
 	return(todo);
     }
 
-    public List getContexts() {
-	Query query = entityManager.createQuery("select c from Context");
+    public List getAll() {
+	Query query = entityManager.createQuery("select c from Context as c");
 	return(query.getResultList());
     }
 }
