@@ -1,6 +1,8 @@
-package com.windsorsolutions.todos;
+package com.windsorsolutions.todos.dao;
 
 import java.util.List;
+import com.windsorsolutions.todos.entities.ToDo;
+import com.windsorsolutions.todos.entities.Context;
 
 public interface ToDoDao {
 

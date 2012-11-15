@@ -1,4 +1,4 @@
-package com.windsorsolutions.todos;
+package com.windsorsolutions.todos.entities;
 
 import org.junit.*;
 

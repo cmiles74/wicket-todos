@@ -1,4 +1,4 @@
-package com.windsorsolutions.todos;
+package com.windsorsolutions.todos.dao;
 
 import org.junit.*;
 import org.springframework.test.*;
@@ -8,6 +8,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.junit4.AbstractTransactionalJUnit4SpringContextTests;
 import org.springframework.test.context.ActiveProfiles;
 import java.util.List;
+import com.windsorsolutions.todos.entities.Context;
+import com.windsorsolutions.todos.entities.ToDo;
 
 @ContextConfiguration(locations={"classpath:applicationContext.xml"})
 @ActiveProfiles("test")

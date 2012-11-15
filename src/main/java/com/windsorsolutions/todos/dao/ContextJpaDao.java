@@ -1,8 +1,9 @@
-package com.windsorsolutions.todos;
+package com.windsorsolutions.todos.dao;
 
 import javax.persistence.*;
 import org.springframework.stereotype.*;
 import java.util.List;
+import com.windsorsolutions.todos.entities.Context;
 
 @Repository(value="ContextDao")
 public class ContextJpaDao implements ContextDao{
