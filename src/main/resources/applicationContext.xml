@@ -37,6 +37,8 @@
 
   <bean class="org.springframework.beans.factory.annotation.AutowiredAnnotationBeanPostProcessor"/>
 
+  <bean id="App" class="com.windsorsolutions.todos.App"/>
+
   <beans profile="default">
     <context:property-placeholder location="classpath:default.properties"
 				  system-properties-mode="OVERRIDE"/>
