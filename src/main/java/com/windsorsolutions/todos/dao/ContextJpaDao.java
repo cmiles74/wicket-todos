@@ -20,7 +20,8 @@ public class ContextJpaDao implements ContextDao{
 
     @Transactional
     public void remove(Context context) {
-	entityManager.remove(context);
+	Context contextRemove = entityManager.find(Context.class, context.getId());
+	entityManager.remove(contextRemove);
     }
 
     @Transactional

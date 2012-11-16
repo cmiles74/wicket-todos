@@ -25,6 +25,8 @@ import de.agilecoders.wicket.markup.html.bootstrap.navbar.Navbar;
 import org.apache.wicket.model.Model;
 import de.agilecoders.wicket.markup.html.bootstrap.navbar.NavbarButton;
 import de.agilecoders.wicket.markup.html.bootstrap.behavior.BootstrapBaseBehavior;
+import org.apache.wicket.model.IModel;
+import org.apache.wicket.markup.html.list.ListView;
 
 public class ToDoHomePage extends WebPage {
 
@@ -44,16 +46,6 @@ public class ToDoHomePage extends WebPage {
      * List of contexts.
      */
     private LoadableDetachableModel contextListModel = null;
-
-    /**
-     * Modal window for adding new contexts.
-     */
-    private ModalWindow contextAddModal = new ModalWindow("contextAddModal");
-
-    /**
-     * Modal window for adding new to-do items.
-     */
-    private ModalWindow todoAddModal = new ModalWindow("todoAddModal");
 
     /**
      * Logger instance
@@ -86,120 +78,25 @@ public class ToDoHomePage extends WebPage {
 		}
 	    };
 
-	// setup our list of contexts
-	final WebMarkupContainer contextsContainer =
+	// container and list of contexts
+	WebMarkupContainer contextsContainer =
 	    new WebMarkupContainer("contextsContainer");
 	contextsContainer.setOutputMarkupId(true);
-
-	// list view to display our contexts
-	PropertyListView contextList =
-	    new PropertyListView<Context>("contexts", contextListModel) {
-
-	    @Override
-	    public void populateItem(ListItem<Context> listItem) {
-
-		// display our context
-		final Context context = listItem.getModelObject();
-		listItem.add(new Label("name", context.getName()));
-		listItem.add(new Label("description", context.getDescription()));
-
-		// fetch our to-do items
-		LoadableDetachableModel todoListModel =
-   		    new LoadableDetachableModel() {
-		        protected Object load() {
-			    return(todoDao.getWithContext(context));
-			}
-		    };
-
-		// display our list of todo items for this context
-		listItem.add(new PropertyListView<ToDo>("todos", todoListModel) {
-
-			public void populateItem(ListItem<ToDo> listItem) {
-
-			    final ToDo todo = listItem.getModelObject();
-			    listItem.add(new Label("content", todo.getContent()));
-			    listItem.add(new AjaxLink("deleteLink") {
-				    @Override
-				    public void onClick(AjaxRequestTarget target) {
-					ToDo todoRemove = todoDao.get(todo.getId());
-					todoDao.remove(todoRemove);
-					contextListModel.detach();
-					target.add(contextsContainer);
-				    }
-				});
-			}
-		    });
-	    }
-	};
-
-	// add contexts to our view
-	contextsContainer.add(contextList);
+	contextsContainer.add(buildContextList("contexts", contextListModel,
+					       contextsContainer));
 	add(contextsContainer);
 
 	// setup our modal for adding new contexts
-	contextAddModal.setInitialWidth(550);
-	contextAddModal.setInitialHeight(300);
+	final ModalWindow contextAddModal =
+	    buildContextAddModalWindow("contextAddModal", contextListModel,
+				       contextsContainer);
 	add(contextAddModal);
 
-	// display the context add modal window
-	contextAddModal.setPageCreator(new ModalWindow.PageCreator() {
-		public Page createPage() {
-		    return(new ContextFormPage(ToDoHomePage.this.getPageReference(),
-					       contextAddModal));
-		}
-	    });
-
-	// handle the closing of our modal window
-	contextAddModal.setWindowClosedCallback(new ModalWindow
-						.WindowClosedCallback() {
-		public void onClose(AjaxRequestTarget target) {
-
-		    // refresh our list of contexts when the modal closes
-		    contextListModel.detach();
-		    target.add(contextsContainer);
-		}
-	    });
-
-	// handle the pressing of the modal window's close button
-	contextAddModal.setCloseButtonCallback(new ModalWindow
-					       .CloseButtonCallback() {
-		public boolean onCloseButtonClicked(AjaxRequestTarget target) {
-
-		    return(true);
-		}
-	    });
-
 	// setup our modal for adding new todo items
-	todoAddModal.setInitialWidth(550);
-	todoAddModal.setInitialHeight(325);
+	final ModalWindow todoAddModal =
+	    buildToDoAddModalWindow("todoAddModal", contextListModel,
+				    contextsContainer);
 	add(todoAddModal);
-
-	// display the todo add modal window
-	todoAddModal.setPageCreator(new ModalWindow.PageCreator() {
-		public Page createPage() {
-		    return(new ToDoFormPage(ToDoHomePage.this.getPageReference(),
-					    todoAddModal,
-					    contextListModel));
-		}
-	    });
-
-	// handle the closing of our modal window
-	todoAddModal.setWindowClosedCallback(new ModalWindow.WindowClosedCallback() {
-		public void onClose(AjaxRequestTarget target) {
-
-		    // refresh our list of contexts when the modal closes
-		    contextListModel.detach();
-		    target.add(contextsContainer);
-		}
-	    });
-
-	// handle the pressing of the modal window's close button
-	todoAddModal.setCloseButtonCallback(new ModalWindow.CloseButtonCallback() {
-		public boolean onCloseButtonClicked(AjaxRequestTarget target) {
-
-		    return(true);
-		}
-	    });
 
 	// add a link to display our context add modal
 	add(new AjaxLink<Void>("addContextLink") {
@@ -218,5 +115,188 @@ public class ToDoHomePage extends WebPage {
 		    todoAddModal.show(target);
 		}
 	    });
+    }
+
+    // private methods
+
+    /**
+     * Returns a ListView of Context entities.
+     *
+     * @param id The placeholder ID in the target web page
+     * @param listModel A list of Context entities
+     * @param contextContainer The parent view of the Context items
+     * @returns A ListView of Context entities
+     */
+    private ListView buildContextList(String id,
+				      final LoadableDetachableModel listModel,
+				      final WebMarkupContainer contextsContainer) {
+
+	PropertyListView<Context> listView =
+	    new PropertyListView<Context>(id, listModel) {
+
+	    @Override
+	    public void populateItem(ListItem<Context> listItem) {
+
+		final Context context = listItem.getModelObject();
+		listItem.add(new Label("name", context.getName()));
+		listItem.add(new Label("description", context.getDescription()));
+
+		// fetch our to-do items
+		LoadableDetachableModel todoListModel =
+		new LoadableDetachableModel() {
+		    protected Object load() {
+			return(todoDao.getWithContext(context));
+		    }
+		};
+
+		// display our list of todo items for this context
+		listItem.add(buildToDoListView("todos", todoListModel, listModel,
+					       contextsContainer));
+	    }
+	};
+
+	return(listView);
+    };
+
+    /**
+     * Returns a ListView of ToDo entities. This view requires a
+     * handle on the parent list of Context entities and it's matching
+     * view, these are used to refresh that list when a ToDo item is
+     * changed, added or removed.
+     *
+     * @param id The placeholder ID in the target web page
+     * @param listModel A list of ToDo entities
+     * @param contextListModel A list of parent contexts
+     * @param contextContainer The parent view of Context items
+     * @returns A ListView of ToDo entities
+     */
+    private ListView
+	buildToDoListView(String id, IModel listModel,
+			  final LoadableDetachableModel contextListModel,
+			  final WebMarkupContainer contextsContainer) {
+
+	PropertyListView<ToDo> listView =
+	    new PropertyListView<ToDo>(id, listModel) {
+
+	    @Override
+	    public void populateItem(ListItem<ToDo> listItem) {
+
+		final ToDo todo = listItem.getModelObject();
+		listItem.add(new Label("content", todo.getContent()));
+		listItem.add(new AjaxLink("deleteLink") {
+
+			@Override
+			public void onClick(AjaxRequestTarget target) {
+			    ToDo todoRemove = todoDao.get(todo.getId());
+			    todoDao.remove(todoRemove);
+			    contextListModel.detach();
+			    target.add(contextsContainer);
+			}
+		    });
+	    }
+	};
+
+	return(listView);
+    }
+
+    /**
+     * Returns a ModalWindow that prompts the customer to create a new
+     * Context entity. Note that this method requires a handle on the
+     * list of Context entities and its view, these will be refreshed
+     * when a new Context is added.
+     *
+     * @param id The placeholder ID in the target webpage
+     * @param contextListModel A list of parent Context entities
+     * @param contextsContainer The parent view of Context items
+     * @returns A ModalWindow instance
+     */
+    private ModalWindow
+	buildContextAddModalWindow(String id,
+				   final LoadableDetachableModel contextListModel,
+				   final WebMarkupContainer contextsContainer) {
+
+	final ModalWindow modalWindow = new ModalWindow(id);
+	modalWindow.setInitialWidth(550);
+	modalWindow.setInitialHeight(300);
+
+	// display the context add modal window
+	modalWindow.setPageCreator(new ModalWindow.PageCreator() {
+		public Page createPage() {
+		    return(new ContextFormPage(ToDoHomePage.this.getPageReference(),
+					       modalWindow));
+		}
+	    });
+
+	// handle the closing of our modal window
+	modalWindow.setWindowClosedCallback(new ModalWindow
+						.WindowClosedCallback() {
+		public void onClose(AjaxRequestTarget target) {
+
+		    // refresh our list of contexts when the modal closes
+		    contextListModel.detach();
+		    target.add(contextsContainer);
+		}
+	    });
+
+	// handle the pressing of the modal window's close button
+	modalWindow.setCloseButtonCallback(new ModalWindow
+					       .CloseButtonCallback() {
+		public boolean onCloseButtonClicked(AjaxRequestTarget target) {
+
+		    return(true);
+		}
+	    });
+
+	return(modalWindow);
+    }
+
+    /**
+     * Returns a ModalWindow that prompts the customer to create a new
+     * ToDo entity. Note that this method requires a handle on the
+     * list of Context entities and its view, these will be refreshed
+     * when a new ToDo is added.
+     *
+     * @param id The placeholder ID in the target webpage
+     * @param contextListModel A list of parent Context entities
+     * @param contextsContainer The parent view of Context entities
+     * @returns A ModalWindow instance
+     */
+    private ModalWindow
+	buildToDoAddModalWindow(String id,
+				final LoadableDetachableModel contextListModel,
+				final WebMarkupContainer contextsContainer) {
+
+	final ModalWindow modalWindow = new ModalWindow(id);
+	modalWindow.setInitialWidth(550);
+	modalWindow.setInitialHeight(325);
+
+	// display the todo add modal window
+	modalWindow.setPageCreator(new ModalWindow.PageCreator() {
+		public Page createPage() {
+		    return(new ToDoFormPage(ToDoHomePage.this.getPageReference(),
+					    modalWindow,
+					    contextListModel));
+		}
+	    });
+
+	// handle the closing of our modal window
+	modalWindow.setWindowClosedCallback(new ModalWindow.WindowClosedCallback() {
+		public void onClose(AjaxRequestTarget target) {
+
+		    // refresh our list of contexts when the modal closes
+		    contextListModel.detach();
+		    target.add(contextsContainer);
+		}
+	    });
+
+	// handle the pressing of the modal window's close button
+	modalWindow.setCloseButtonCallback(new ModalWindow.CloseButtonCallback() {
+		public boolean onCloseButtonClicked(AjaxRequestTarget target) {
+
+		    return(true);
+		}
+	    });
+
+	return(modalWindow);
     }
 }

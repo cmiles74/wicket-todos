@@ -11,23 +11,19 @@
 
       <div wicket:id="contextsContainer">
 	<span wicket:id="contexts">
+	  <h2><span wicket:id="name">Office</span></h2>
+	  <p><span wicket:id="description">My place of business.</span></p>
 	  <ul>
-	    <li>
-	      <h2><span wicket:id="name">Office</span></h2>
-	      <p><span wicket:id="description">My place of business.</span></p>
-	      <ul>
-		<span wicket:id="todos">
-		  <li>
-		    <p>
-		      <span wicket:id="content">Sample To-Do Item</span>
-		      <a wicket:id="deleteLink" class="btn btn-mini">
-			<i class="icon-trash"></i>
-		      </a>
-		    </p>
-		  </li>
-		</span>
-	      </ul>
-	    </li>
+	    <span wicket:id="todos">
+	      <li>
+		<p>
+		  <span wicket:id="content">Sample To-Do Item</span>
+		  <a wicket:id="deleteLink" class="btn btn-mini">
+		    <i class="icon-trash"></i>
+		  </a>
+		</p>
+	      </li>
+	    </span>
 	  </ul>
 	</span>
 	<wicket:remove>
