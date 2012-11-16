@@ -17,6 +17,13 @@
   <context:component-scan base-package="com.windsorsolutions.todos"/>
   <context:annotation-config/>
 
+  <bean id="transactionManager"
+	class="org.springframework.orm.jpa.JpaTransactionManager">
+    <property name="entityManagerFactory" ref="entityManagerFactory"/>
+  </bean>
+
+  <bean class="org.springframework.beans.factory.annotation.AutowiredAnnotationBeanPostProcessor"/>
+
   <bean id="entityManagerFactory"
 	class="org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean">
     <property name="dataSource" ref="dataSource"/>
@@ -30,15 +37,6 @@
     </property>
   </bean>
 
-  <bean id="transactionManager"
-	class="org.springframework.orm.jpa.JpaTransactionManager">
-    <property name="entityManagerFactory" ref="entityManagerFactory"/>
-  </bean>
-
-  <bean class="org.springframework.beans.factory.annotation.AutowiredAnnotationBeanPostProcessor"/>
-
-  <bean id="App" class="com.windsorsolutions.todos.App"/>
-
   <beans profile="default">
     <context:property-placeholder location="classpath:default.properties"
 				  system-properties-mode="OVERRIDE"/>
@@ -50,7 +48,7 @@
       <property name="password" value="${jdbc.password}"/>
     </bean>
     <jee:jndi-lookup id="dataSource"
-		     jndi-name="/jdbc/todosDataSource"
+		     jndi-name="jdbc/todosDataSource"
 		     resource-ref="true"
 		     default-ref="defaultDataSource"/>
   </beans>

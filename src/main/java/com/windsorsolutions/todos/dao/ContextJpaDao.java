@@ -2,6 +2,7 @@ package com.windsorsolutions.todos.dao;
 
 import javax.persistence.*;
 import org.springframework.stereotype.*;
+import org.springframework.transaction.annotation.*;
 import java.util.List;
 import com.windsorsolutions.todos.entities.Context;
 
@@ -11,15 +12,18 @@ public class ContextJpaDao implements ContextDao{
     @PersistenceContext
     private EntityManager entityManager = null;
 
+    @Transactional
     public Context persist(Context context) {
 	entityManager.persist(context);
 	return(context);
     }
 
+    @Transactional
     public void remove(Context context) {
 	entityManager.remove(context);
     }
 
+    @Transactional
     public Context merge(Context context) {
 	Context contextMerged = entityManager.merge(context);
 	return(contextMerged);

@@ -6,6 +6,9 @@ import com.windsorsolutions.todos.service.ToDoHomePage;
 import org.springframework.beans.factory.annotation.Autowired;
 import com.windsorsolutions.todos.dao.ToDoJpaDao;
 import com.windsorsolutions.todos.dao.ContextJpaDao;
+import com.windsorsolutions.todos.entities.Context;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * Provides an application for managing a To-Do list.
@@ -24,6 +27,11 @@ public class App extends WebApplication {
     @Autowired
     private ContextJpaDao contextJpaDao = null;
 
+    /**
+     * Logger instance
+     */
+    private Logger logger = LoggerFactory.getLogger(App.class);
+
     @Override
     protected void init() {
 	super.init();
@@ -33,6 +41,7 @@ public class App extends WebApplication {
 
     @Override
     public Class<ToDoHomePage> getHomePage() {
+
 	return ToDoHomePage.class;
     }
 }

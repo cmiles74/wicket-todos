@@ -13,11 +13,11 @@ import com.windsorsolutions.todos.entities.Context;
 @ContextConfiguration(locations={"classpath:applicationContext.xml"})
 @ActiveProfiles("test")
 @Transactional
-public class ContextJpaDaoTest
+public class ContextDaoTest
     extends AbstractTransactionalJUnit4SpringContextTests {
 
     @Autowired
-    ContextJpaDao contextJpaDao = null;
+    ContextDao contextDao = null;
 
     @Test
     public void testCreateAndRemove() {
@@ -26,12 +26,12 @@ public class ContextJpaDaoTest
 	Context context = new Context();
 	context.setName("Office");
 	context.setDescription("Wherever my laptop is.");
-	context = contextJpaDao.persist(context);
+	context = contextDao.persist(context);
 	Assert.assertNotNull(context.getId());
 
 	// remove a context
-	contextJpaDao.remove(context);
-	context = contextJpaDao.get(context.getId());
+	contextDao.remove(context);
+	context = contextDao.get(context.getId());
 	Assert.assertNull(context);
     }
 
@@ -42,11 +42,11 @@ public class ContextJpaDaoTest
 	Context context = new Context();
 	context.setName("Office");
 	context.setDescription("Wherever my laptop is.");
-	context = contextJpaDao.persist(context);
+	context = contextDao.persist(context);
 	Assert.assertNotNull(context.getId());
 
 	// get all contexts
-	List contexts = contextJpaDao.getAll();
+	List contexts = contextDao.getAll();
 	Assert.assertEquals(contexts.size(), 1);
 
 	// verify contexts
@@ -61,14 +61,14 @@ public class ContextJpaDaoTest
 	Context context = new Context();
 	context.setName("Office");
 	context.setDescription("Wherever my laptop is.");
-	context = contextJpaDao.persist(context);
+	context = contextDao.persist(context);
 
 	// fetch the context
-	Context contextFetched = contextJpaDao.get(context.getId());
+	Context contextFetched = contextDao.get(context.getId());
 	Assert.assertNotNull(contextFetched);
 
 	// remove the context
-	contextJpaDao.remove(context);
+	contextDao.remove(context);
     }
 
     @Test
@@ -78,14 +78,14 @@ public class ContextJpaDaoTest
 	Context context = new Context();
 	context.setName("Office");
 	context.setDescription("Wherever my laptop is.");
-	context = contextJpaDao.persist(context);
+	context = contextDao.persist(context);
 
 	// update the context
 	context.setName("Home");
-	context = contextJpaDao.merge(context);
+	context = contextDao.merge(context);
 	Assert.assertEquals(context.getName(), "Home");
 
 	// remove the context
-	contextJpaDao.remove(context);
+	contextDao.remove(context);
     }
 }

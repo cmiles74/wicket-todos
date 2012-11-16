@@ -1,23 +1,29 @@
 <html>
   <body>
 
-    <h1>To-Do Service Home Page</h1>
+    <h1>To-Do List</h1>
 
     <h2>Contexts</h2>
 
-    <span wicket:id="contexts">
-      <ul>
-	<li>
-	  <b><span wicket:id="name">Office</span></b>
-	  <p><span wicket:id="description">My place of business.</span></p>
-	</li>
-      </ul>
-    </span>
-    <wicket:remove>
+    <div wicket:id="contextsContainer">
+      <span wicket:id="contexts">
+	<ul>
+	  <li>
+	    <b><span wicket:id="name">Office</span></b>
+	    <p><span wicket:id="description">My place of business.</span></p>
+	  </li>
+	</ul>
+      </span>
+      <wicket:remove>
 	<li>
 	  <b>Office</b>
 	  <p>My place of business.</p>
 	</li>
-    </wicket:remove>
+      </wicket:remove>
+    </div>
+
+    <p><a wicket:id="addContextLink">Add a New Context</a></p>
+
+    <div wicket:id="contextAddModal"></div>
   </body>
 </html>

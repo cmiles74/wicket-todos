@@ -2,6 +2,7 @@ package com.windsorsolutions.todos.entities;
 
 import javax.persistence.*;
 import java.util.Collection;
+import java.io.Serializable;
 
 /**
  * Provides an object that models a context for a to-do item. A
@@ -10,7 +11,7 @@ import java.util.Collection;
  */
 @Entity
 @Table(name="contexts")
-public class Context {
+public class Context implements Serializable {
 
     /** Unique ID */
     @Id

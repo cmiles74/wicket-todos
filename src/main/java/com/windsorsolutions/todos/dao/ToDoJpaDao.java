@@ -2,6 +2,7 @@ package com.windsorsolutions.todos.dao;
 
 import javax.persistence.*;
 import org.springframework.stereotype.*;
+import org.springframework.transaction.annotation.*;
 import java.util.List;
 import com.windsorsolutions.todos.entities.ToDo;
 import com.windsorsolutions.todos.entities.Context;
@@ -12,15 +13,18 @@ public class ToDoJpaDao implements ToDoDao {
     @PersistenceContext
     private EntityManager entityManager = null;
 
+    @Transactional
     public ToDo persist(ToDo todo) {
 	entityManager.persist(todo);
 	return(todo);
     }
 
+    @Transactional
     public void remove(ToDo todo) {
 	entityManager.remove(todo);
     }
 
+    @Transactional
     public ToDo merge(ToDo todo) {
 	ToDo todoMerged = entityManager.merge(todo);
 	return(todoMerged);

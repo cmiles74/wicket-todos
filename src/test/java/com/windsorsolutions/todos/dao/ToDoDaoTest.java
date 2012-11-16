@@ -14,14 +14,14 @@ import com.windsorsolutions.todos.entities.ToDo;
 @ContextConfiguration(locations={"classpath:applicationContext.xml"})
 @ActiveProfiles("test")
 @Transactional
-public class ToDoJpaDaoTest
+public class ToDoDaoTest
     extends AbstractTransactionalJUnit4SpringContextTests {
 
     @Autowired
-    ToDoJpaDao todoJpaDao = null;
+    ToDoDao todoDao = null;
 
     @Autowired
-    ContextJpaDao contextJpaDao = null;
+    ContextDao contextDao = null;
 
     @Test
     public void testCreateAndRemove() {
@@ -30,19 +30,19 @@ public class ToDoJpaDaoTest
 	Context context = new Context();
 	context.setName("Office");
 	context.setDescription("Wherever my laptop is.");
-	context = contextJpaDao.persist(context);
+	context = contextDao.persist(context);
 
 	// create a todo item
 	ToDo todo = new ToDo();
 	todo.setContext(context);
 	todo.setContent("Code up the sample todo application.");
-	todo = todoJpaDao.persist(todo);
+	todo = todoDao.persist(todo);
 	Assert.assertNotNull(todo.getId());
 
 	// remove context and todo
-	todoJpaDao.remove(todo);
-	contextJpaDao.remove(context);
-	todo = todoJpaDao.get(todo.getId());
+	todoDao.remove(todo);
+	contextDao.remove(context);
+	todo = todoDao.get(todo.getId());
 	Assert.assertNull(todo);
     }
 
@@ -53,16 +53,16 @@ public class ToDoJpaDaoTest
 	Context context = new Context();
 	context.setName("Office");
 	context.setDescription("Wherever my laptop is.");
-	context = contextJpaDao.persist(context);
+	context = contextDao.persist(context);
 
 	// create a todo item
 	ToDo todo = new ToDo();
 	todo.setContext(context);
 	todo.setContent("Code up the sample todo application.");
-	todo = todoJpaDao.persist(todo);
+	todo = todoDao.persist(todo);
 
 	// get all todos
-	List todos = todoJpaDao.getAll();
+	List todos = todoDao.getAll();
 	Assert.assertEquals(todos.size(), 1);
 
 	// verify todos
@@ -70,8 +70,8 @@ public class ToDoJpaDaoTest
 	Assert.assertEquals(todoListed.getId(), todo.getId());
 
 	// remove todo and context
-	todoJpaDao.remove(todo);
-	contextJpaDao.remove(context);
+	todoDao.remove(todo);
+	contextDao.remove(context);
     }
 
     @Test
@@ -81,22 +81,22 @@ public class ToDoJpaDaoTest
 	Context context = new Context();
 	context.setName("Office");
 	context.setDescription("Wherever my laptop is.");
-	context = contextJpaDao.persist(context);
+	context = contextDao.persist(context);
 
 	// create a todo item
 	ToDo todo = new ToDo();
 	todo.setContext(context);
 	todo.setContent("Code up the sample todo application.");
-	todo = todoJpaDao.persist(todo);
+	todo = todoDao.persist(todo);
 
 	// update the todo
 	todo.setContent("I mean, like, code it up now!");
-	todo = todoJpaDao.persist(todo);
+	todo = todoDao.persist(todo);
 	Assert.assertEquals(todo.getContent(), "I mean, like, code it up now!");
 
 	// remove the todo and context
-	todoJpaDao.remove(todo);
-	contextJpaDao.remove(context);
+	todoDao.remove(todo);
+	contextDao.remove(context);
     }
 
     @Test
@@ -106,16 +106,16 @@ public class ToDoJpaDaoTest
 	Context context = new Context();
 	context.setName("Office");
 	context.setDescription("Wherever my laptop is.");
-	context = contextJpaDao.persist(context);
+	context = contextDao.persist(context);
 
 	// create a todo item
 	ToDo todo = new ToDo();
 	todo.setContext(context);
 	todo.setContent("Code up the sample todo application.");
-	todo = todoJpaDao.persist(todo);
+	todo = todoDao.persist(todo);
 
 	// get all todos
-	List todos = todoJpaDao.getWithContext(context);
+	List todos = todoDao.getWithContext(context);
 	Assert.assertEquals(todos.size(), 1);
 
 	// verify todos
@@ -123,7 +123,7 @@ public class ToDoJpaDaoTest
 	Assert.assertEquals(todoListed.getId(), todo.getId());
 
 	// remove todo and context
-	todoJpaDao.remove(todo);
-	contextJpaDao.remove(context);
+	todoDao.remove(todo);
+	contextDao.remove(context);
     }
 }

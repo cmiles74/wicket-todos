@@ -3,13 +3,14 @@ package com.windsorsolutions.todos.entities;
 import java.util.Date;
 
 import javax.persistence.*;
+import java.io.Serializable;
 
 /**
  * Provides an object that models a To-Do item.
  */
 @Entity
 @Table(name="todos")
-public class ToDo {
+public class ToDo implements Serializable {
 
     /** Unique ID */
     @Id
