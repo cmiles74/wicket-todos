@@ -43,11 +43,6 @@ public class ToDoHomePage extends WebPage {
     private ContextDao contextDao;
 
     /**
-     * List of contexts.
-     */
-    private LoadableDetachableModel contextListModel = null;
-
-    /**
      * Logger instance
      */
     private Logger logger = LoggerFactory.getLogger(ToDoHomePage.class);
@@ -66,13 +61,10 @@ public class ToDoHomePage extends WebPage {
 	// setup our navigation bar
 	Navbar navbar = new Navbar("navigationBar");
 	navbar.brandName(Model.of("Windsor Solutions To-Do Management System"));
-	// navbar.addButton(Navbar.Position.LEFT,
-	// 		 new NavbarButton<ToDoHomePage>(ToDoHomePage.class,
-	// 						Model.of("Home")));
 	add(navbar);
 
 	// fetch our contexts
-	contextListModel = new LoadableDetachableModel() {
+	LoadableDetachableModel contextListModel = new LoadableDetachableModel() {
 		protected Object load() {
 		    return(contextDao.getAll());
 		}
