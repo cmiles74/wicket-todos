@@ -31,7 +31,7 @@ public class ContextFormPage extends WebPage {
     /**
      * Logger instance
      */
-    private Logger logger = LoggerFactory.getLogger(ContextForm.class);
+    private Logger logger = LoggerFactory.getLogger(ContextFormPage.class);
 
     public ContextFormPage(final PageReference pageReference,
 			   final ModalWindow modalWindow) {

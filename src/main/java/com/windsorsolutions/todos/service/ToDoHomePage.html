@@ -11,6 +11,12 @@
 	  <li>
 	    <b><span wicket:id="name">Office</span></b>
 	    <p><span wicket:id="description">My place of business.</span></p>
+	    <p><b>To Do Items</b></p>
+	    <ul>
+	      <li><span wicket:id="todos">
+		<p wicket:id="content">Sample To-Do Item</p>
+	      </span></li>
+	    </ul>
 	  </li>
 	</ul>
       </span>
@@ -18,12 +24,21 @@
 	<li>
 	  <b>Office</b>
 	  <p>My place of business.</p>
+	  <p><b>To Do Items</b></p>
+	  <ul>
+	    <li>
+	      <p>Sample To-Do Item</p>
+	    </li>
+	  </ul>
 	</li>
       </wicket:remove>
     </div>
 
     <p><a wicket:id="addContextLink">Add a New Context</a></p>
+    <p><a wicket:id="addTodoLink">Add a New To-Do</a></p>
 
+    <!-- Modal Windows -->
     <div wicket:id="contextAddModal"></div>
+    <div wicket:id="todoAddModal"></div>
   </body>
 </html>

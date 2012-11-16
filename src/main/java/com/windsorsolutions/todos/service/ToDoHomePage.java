@@ -18,6 +18,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.apache.wicket.ajax.markup.html.AjaxLink;
 import org.apache.wicket.markup.html.WebMarkupContainer;
+import com.windsorsolutions.todos.entities.ToDo;
 
 public class ToDoHomePage extends WebPage {
 
@@ -44,6 +45,11 @@ public class ToDoHomePage extends WebPage {
     private ModalWindow contextAddModal = new ModalWindow("contextAddModal");
 
     /**
+     * Modal window for adding new to-do items.
+     */
+    private ModalWindow todoAddModal = new ModalWindow("todoAddModal");
+
+    /**
      * Logger instance
      */
     private Logger logger = LoggerFactory.getLogger(ToDoHomePage.class);
@@ -55,7 +61,7 @@ public class ToDoHomePage extends WebPage {
 
 	// fetch our contexts
 	contextListModel = new LoadableDetachableModel() {
-		protected  Object load() {
+		protected Object load() {
 		    return(contextDao.getAll());
 		}
 	    };
@@ -65,11 +71,30 @@ public class ToDoHomePage extends WebPage {
 	    new PropertyListView<Context>("contexts", contextListModel) {
 
 	    @Override
-	    public void populateItem(final ListItem<Context> listItem) {
+	    public void populateItem(ListItem<Context> listItem) {
 
+		// display our context
 		final Context context = listItem.getModelObject();
 		listItem.add(new Label("name", context.getName()));
 		listItem.add(new Label("description", context.getDescription()));
+
+		// fetch our to-do items
+		LoadableDetachableModel todoListModel =
+   		    new LoadableDetachableModel() {
+		        protected Object load() {
+			    return(todoDao.getWithContext(context));
+			}
+		    };
+
+		// display our list of todo items for this context
+		listItem.add(new PropertyListView<ToDo>("todos", todoListModel) {
+
+			public void populateItem(ListItem<ToDo> listItem) {
+
+			    ToDo todo = listItem.getModelObject();
+			    listItem.add(new Label("content", todo.getContent()));
+			}
+		    });
 	    }
 	};
 
@@ -112,12 +137,52 @@ public class ToDoHomePage extends WebPage {
 		}
 	    });
 
+	// setup our modal for adding new todo items
+	todoAddModal.setCookieName("todoAddModal");
+	add(todoAddModal);
+
+	// display the todo add modal window
+	todoAddModal.setPageCreator(new ModalWindow.PageCreator() {
+		public Page createPage() {
+		    return(new ToDoFormPage(ToDoHomePage.this.getPageReference(),
+					    todoAddModal,
+					    contextListModel));
+		}
+	    });
+
+	// handle the closing of our modal window
+	todoAddModal.setWindowClosedCallback(new ModalWindow.WindowClosedCallback() {
+		public void onClose(AjaxRequestTarget target) {
+
+		    // refresh our list of contexts when the modal closes
+		    contextListModel.detach();
+		    target.add(contextsContainer);
+		}
+	    });
+
+	// handle the pressing of the modal window's close button
+	todoAddModal.setCloseButtonCallback(new ModalWindow.CloseButtonCallback() {
+		public boolean onCloseButtonClicked(AjaxRequestTarget target) {
+
+		    return(true);
+		}
+	    });
+
 	// add a link to display our context add modal
 	add(new AjaxLink<Void>("addContextLink") {
 
 		@Override
 		public void onClick(AjaxRequestTarget target) {
 		    contextAddModal.show(target);
+		}
+	    });
+
+	// add a link to display our context add modal
+	add(new AjaxLink<Void>("addTodoLink") {
+
+		@Override
+		public void onClick(AjaxRequestTarget target) {
+		    todoAddModal.show(target);
 		}
 	    });
     }
