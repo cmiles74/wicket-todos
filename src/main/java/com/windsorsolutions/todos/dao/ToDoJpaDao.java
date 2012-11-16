@@ -21,7 +21,8 @@ public class ToDoJpaDao implements ToDoDao {
 
     @Transactional
     public void remove(ToDo todo) {
-	entityManager.remove(todo);
+	ToDo todoRemove = entityManager.find(ToDo.class, todo.getId());
+	entityManager.remove(todoRemove);
     }
 
     @Transactional

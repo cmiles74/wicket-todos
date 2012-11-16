@@ -9,6 +9,8 @@ import com.windsorsolutions.todos.dao.ContextJpaDao;
 import com.windsorsolutions.todos.entities.Context;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import de.agilecoders.wicket.settings.BootstrapSettings;
+import de.agilecoders.wicket.Bootstrap;
 
 /**
  * Provides an application for managing a To-Do list.
@@ -35,8 +37,15 @@ public class App extends WebApplication {
     @Override
     protected void init() {
 	super.init();
+
+	// setup Spring interop
 	getComponentInstantiationListeners()
 	    .add(new SpringComponentInjector(this));
+
+	// setup Twitter Bootstrap
+	BootstrapSettings settings = new BootstrapSettings();
+	settings.minify(false); // use minimized version of all bootstrap references
+	Bootstrap.install(this, settings);
     }
 
     @Override

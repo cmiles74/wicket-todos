@@ -16,6 +16,9 @@ import org.apache.wicket.PageReference;
 import org.apache.wicket.extensions.ajax.markup.html.modal.ModalWindow;
 import org.apache.wicket.ajax.markup.html.form.AjaxSubmitLink;
 import org.apache.wicket.ajax.AjaxRequestTarget;
+import de.agilecoders.wicket.markup.html.bootstrap.html.HtmlTag;
+import java.util.Locale;
+import de.agilecoders.wicket.markup.html.bootstrap.behavior.BootstrapBaseBehavior;
 
 /**
  * Provides a form for creating a new Context entity.
@@ -36,39 +39,21 @@ public class ContextFormPage extends WebPage {
     public ContextFormPage(final PageReference pageReference,
 			   final ModalWindow modalWindow) {
 
+	// add HTML declaration
+	add(new HtmlTag("html").locale(Locale.ENGLISH));
+
+	// add Bootstrap
+        add(new BootstrapBaseBehavior());
+
 	ContextForm contextForm = new ContextForm("contextAddForm", modalWindow);
 	add(contextForm);
-	add(new AjaxSubmitLink("formSubmit", contextForm) {
-
-		@Override
-		protected void onSubmit(AjaxRequestTarget target,
-					Form form) {
-
-		    ContextForm contextForm = (ContextForm) form;
-		    ValueMap valueMap = contextForm.getModelObject();
-		    logger.debug("Saving new Context...");
-		    logger.debug("  Name: " + valueMap.get("name"));
-		    logger.debug("  Description: " + valueMap.get("description"));
-
-
-		    Context context = new Context();
-		    context.setName((String) valueMap.get("name"));
-		    context.setDescription((String) valueMap.get("description"));
-		    context = contextDao.persist(context);
-		    logger.debug("Context save with ID " + context.getId());
-
-		    valueMap.put("name", "");
-		    valueMap.put("description", "");
-		    modalWindow.close(target);
-		}
-	    });
     }
 
     public class ContextForm extends Form<ValueMap> {
 
 	ModalWindow modalWindow = null;
 
-	public ContextForm(String id, ModalWindow modalWindow) {
+	public ContextForm(String id, final ModalWindow modalWindow) {
 
 	    super(id, new CompoundPropertyModel<ValueMap>(new ValueMap()));
 
@@ -76,6 +61,43 @@ public class ContextFormPage extends WebPage {
 	    setMarkupId(id);
 	    add(new TextField<String>("name").setType(String.class));
 	    add(new TextArea<String>("description").setType(String.class));
+
+	    add(new AjaxSubmitLink("formCancel", this) {
+
+		    @Override
+		    protected void onSubmit(AjaxRequestTarget target, Form form) {
+
+			ContextForm contextForm = (ContextForm) form;
+			ValueMap valueMap = contextForm.getModelObject();
+
+			valueMap.put("name", "");
+			valueMap.put("description", "");
+			modalWindow.close(target);
+		    }
+		});
+	    add(new AjaxSubmitLink("formSubmit", this) {
+
+		    @Override
+		    protected void onSubmit(AjaxRequestTarget target, Form form) {
+
+			ContextForm contextForm = (ContextForm) form;
+			ValueMap valueMap = contextForm.getModelObject();
+			logger.debug("Saving new Context...");
+			logger.debug("  Name: " + valueMap.get("name"));
+			logger.debug("  Description: " + valueMap.get("description"));
+
+
+			Context context = new Context();
+			context.setName((String) valueMap.get("name"));
+			context.setDescription((String) valueMap.get("description"));
+			context = contextDao.persist(context);
+			logger.debug("Context save with ID " + context.getId());
+
+			valueMap.put("name", "");
+			valueMap.put("description", "");
+			modalWindow.close(target);
+		    }
+		});
 	}
     }
 }

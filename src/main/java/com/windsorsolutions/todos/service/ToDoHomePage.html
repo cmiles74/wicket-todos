@@ -1,41 +1,60 @@
-<html>
+<html wicket:id="html" xmlns:wicket="http://wicket.apache.org">
   <body>
 
-    <h1>To-Do List</h1>
+    <div wicket:id="navigationBar"></div>
 
-    <h2>Contexts</h2>
+    <div class="container">
 
-    <div wicket:id="contextsContainer">
-      <span wicket:id="contexts">
-	<ul>
-	  <li>
-	    <b><span wicket:id="name">Office</span></b>
-	    <p><span wicket:id="description">My place of business.</span></p>
-	    <p><b>To Do Items</b></p>
-	    <ul>
-	      <li><span wicket:id="todos">
-		<p wicket:id="content">Sample To-Do Item</p>
-	      </span></li>
-	    </ul>
-	  </li>
-	</ul>
-      </span>
-      <wicket:remove>
-	<li>
-	  <b>Office</b>
-	  <p>My place of business.</p>
-	  <p><b>To Do Items</b></p>
+      <h1>Your To-Do List</h1>
+
+      <p>Listed below are all the things that you have to do.</p>
+
+      <div wicket:id="contextsContainer">
+	<span wicket:id="contexts">
 	  <ul>
 	    <li>
-	      <p>Sample To-Do Item</p>
+	      <h2><span wicket:id="name">Office</span></h2>
+	      <p><span wicket:id="description">My place of business.</span></p>
+	      <ul>
+		<span wicket:id="todos">
+		  <li>
+		    <p>
+		      <span wicket:id="content">Sample To-Do Item</span>
+		      <a wicket:id="deleteLink" class="btn btn-mini">
+			<i class="icon-trash"></i>
+		      </a>
+		    </p>
+		  </li>
+		</span>
+	      </ul>
 	    </li>
 	  </ul>
-	</li>
-      </wicket:remove>
-    </div>
+	</span>
+	<wicket:remove>
+	  <li>
+	    <b>Office</b>
+	    <p>My place of business.</p>
+	    <p><b>To Do Items</b></p>
+	    <ul>
+	      <li>
+		<p>Sample To-Do Item</p>
+	      </li>
+	    </ul>
+	  </li>
+	</wicket:remove>
+      </div>
 
-    <p><a wicket:id="addContextLink">Add a New Context</a></p>
-    <p><a wicket:id="addTodoLink">Add a New To-Do</a></p>
+      <p style="margin-top: 50px;">
+        <a wicket:id="addTodoLink" class="btn">
+	  <i class="icon-inbox"></i>
+	  Add a New To-Do
+	</a>
+	<a wicket:id="addContextLink" class="btn">
+	  <i class="icon-plus"></i>
+	  Add a New Context
+	</a>
+      </p>
+    </div>
 
     <!-- Modal Windows -->
     <div wicket:id="contextAddModal"></div>

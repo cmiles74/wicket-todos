@@ -1,17 +1,47 @@
-<html>
+<html wicket:id="html" xmlns:wicket="http://wicket.apache.org">
   <body>
 
-    <h1>Add a New To-Do</h1>
+    <div class="container">
+      <form wicket:id="todoAddForm" class="form-horizontal">
+	<fieldset>
 
-    <form wicket:id="todoAddForm">
-      <ul>
-	<li>
-	  <b>What You Need To Do</b><br/>
-	  <textarea wicket:id="content">I need to...</textarea>
-	</li>
-      </ul>
-    </form>
+	  <legend>Add a New To-Do</legend>
 
-    <a wicket:id="formSubmit">Create New To-Do</a>
+	  <p>A "to-do" is something that you need to get done. By
+	  creating this to-do, you are making a commitment to complete
+	  this task.</p>
+
+	  <div class="control-group">
+	    <label class="control-label" for="context">Context</label>
+	    <div class="controls">
+	      <select wicket:id="context">
+		<option>Outer Space</option>
+	      </select>
+	    </div>
+	  </div>
+
+	  <div class="control-group">
+	    <label class="control-label" for="description">Description</label>
+	    <div class="controls">
+	      <textarea wicket:id="content">I need to...</textarea>
+	    </div>
+	  </div>
+
+	  <div class="control-group">
+	    <div class="controls">
+	      <a wicket:id="formCancel" class="btn btn-danger">
+		<i class="icon-remove"></i>
+		Cancel
+	      </a>
+
+	      <a wicket:id="formSubmit" class="btn btn-success">
+		<i class="icon-ok"></i>
+		Create New To-Do
+	      </a>
+	    </div>
+	  </div>
+	</fieldset>
+      </form>
+    </div>
   </body>
 </html>

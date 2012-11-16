@@ -19,6 +19,12 @@ import org.slf4j.LoggerFactory;
 import org.apache.wicket.ajax.markup.html.AjaxLink;
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import com.windsorsolutions.todos.entities.ToDo;
+import de.agilecoders.wicket.markup.html.bootstrap.html.HtmlTag;
+import java.util.Locale;
+import de.agilecoders.wicket.markup.html.bootstrap.navbar.Navbar;
+import org.apache.wicket.model.Model;
+import de.agilecoders.wicket.markup.html.bootstrap.navbar.NavbarButton;
+import de.agilecoders.wicket.markup.html.bootstrap.behavior.BootstrapBaseBehavior;
 
 public class ToDoHomePage extends WebPage {
 
@@ -59,12 +65,31 @@ public class ToDoHomePage extends WebPage {
      */
     public ToDoHomePage() {
 
+	// add HTML declaration
+	add(new HtmlTag("html").locale(Locale.ENGLISH));
+
+	// add Bootstrap
+        add(new BootstrapBaseBehavior());
+
+	// setup our navigation bar
+	Navbar navbar = new Navbar("navigationBar");
+	navbar.brandName(Model.of("Windsor Solutions To-Do Management System"));
+	// navbar.addButton(Navbar.Position.LEFT,
+	// 		 new NavbarButton<ToDoHomePage>(ToDoHomePage.class,
+	// 						Model.of("Home")));
+	add(navbar);
+
 	// fetch our contexts
 	contextListModel = new LoadableDetachableModel() {
 		protected Object load() {
 		    return(contextDao.getAll());
 		}
 	    };
+
+	// setup our list of contexts
+	final WebMarkupContainer contextsContainer =
+	    new WebMarkupContainer("contextsContainer");
+	contextsContainer.setOutputMarkupId(true);
 
 	// list view to display our contexts
 	PropertyListView contextList =
@@ -91,22 +116,29 @@ public class ToDoHomePage extends WebPage {
 
 			public void populateItem(ListItem<ToDo> listItem) {
 
-			    ToDo todo = listItem.getModelObject();
+			    final ToDo todo = listItem.getModelObject();
 			    listItem.add(new Label("content", todo.getContent()));
+			    listItem.add(new AjaxLink("deleteLink") {
+				    @Override
+				    public void onClick(AjaxRequestTarget target) {
+					ToDo todoRemove = todoDao.get(todo.getId());
+					todoDao.remove(todoRemove);
+					contextListModel.detach();
+					target.add(contextsContainer);
+				    }
+				});
 			}
 		    });
 	    }
 	};
 
-	// setup our list of contexts
-	final WebMarkupContainer contextsContainer =
-	    new WebMarkupContainer("contextsContainer");
-	contextsContainer.setOutputMarkupId(true);
+	// add contexts to our view
 	contextsContainer.add(contextList);
 	add(contextsContainer);
 
 	// setup our modal for adding new contexts
-	contextAddModal.setCookieName("contextAddModal");
+	contextAddModal.setInitialWidth(550);
+	contextAddModal.setInitialHeight(300);
 	add(contextAddModal);
 
 	// display the context add modal window
@@ -138,7 +170,8 @@ public class ToDoHomePage extends WebPage {
 	    });
 
 	// setup our modal for adding new todo items
-	todoAddModal.setCookieName("todoAddModal");
+	todoAddModal.setInitialWidth(550);
+	todoAddModal.setInitialHeight(325);
 	add(todoAddModal);
 
 	// display the todo add modal window

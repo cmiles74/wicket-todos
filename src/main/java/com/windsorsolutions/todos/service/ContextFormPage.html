@@ -1,21 +1,45 @@
-<html>
+<html wicket:id="html" xmlns:wicket="http://wicket.apache.org">
   <body>
 
-    <h1>Add a New Context</h1>
+    <div class="container">
+      <form wicket:id="contextAddForm" class="form-horizontal">
+	<fieldset>
 
-    <form wicket:id="contextAddForm">
-      <ul>
-	<li>
-	  <b>Name</b><br/>
-	  <input type="text" wicket:id="name"/>
-	</li>
-	<li>
-	  <b>Description</b><br/>
-	  <textarea wicket:id="description">Description of this context</textarea>
-	</li>
-      </ul>
-    </form>
+	  <legend>Add a New Context</legend>
 
-    <a wicket:id="formSubmit">Create New Context</a>
+	  <p>A "context" represents the place or even the situation
+	  you need to be in order to complete a certain set of to-do
+	  items.</p>
+
+	  <div class="control-group">
+	    <label class="control-label" for="name">Name</label>
+	    <div class="controls">
+	      <input type="text" wicket:id="name"/>
+	    </div>
+	  </div>
+
+	  <div class="control-group">
+	    <label class="control-label" for="description">Description</label>
+	    <div class="controls">
+	      <textarea wicket:id="description">Description of this context</textarea>
+	    </div>
+	  </div>
+
+	  <div class="control-group">
+	    <div class="controls">
+	      <a wicket:id="formCancel" class="btn btn-danger">
+		<i class="icon-remove"></i>
+		Cancel
+	      </a>
+
+	      <a wicket:id="formSubmit" class="btn btn-success">
+		<i class="icon-ok"></i>
+		Create New Context
+	      </a>
+	    </div>
+	  </div>
+	</fieldset>
+      </form>
+    </div>
   </body>
 </html>
