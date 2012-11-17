@@ -73,8 +73,9 @@ public class ToDoHomePage extends WebPage {
 	// container and list of contexts
 	WebMarkupContainer contextsContainer =
 	    new WebMarkupContainer("contextsContainer");
+	contextsContainer.setMarkupId("contextsContainer");
 	contextsContainer.setOutputMarkupId(true);
-	contextsContainer.add(buildContextList("contexts", contextListModel,
+	contextsContainer.add(buildContextList("context", contextListModel,
 					       contextsContainer));
 	add(contextsContainer);
 
@@ -91,22 +92,28 @@ public class ToDoHomePage extends WebPage {
 	add(todoAddModal);
 
 	// add a link to display our context add modal
-	add(new AjaxLink<Void>("addContextLink") {
+	AjaxLink addContextLink = new AjaxLink<Void>("addContextLink") {
 
-		@Override
-		public void onClick(AjaxRequestTarget target) {
-		    contextAddModal.show(target);
-		}
-	    });
+	    @Override
+	    public void onClick(AjaxRequestTarget target) {
+		contextAddModal.show(target);
+	    }
+	};
+
+	addContextLink.setMarkupId("addContextLink");
+	add(addContextLink);
 
 	// add a link to display our context add modal
-	add(new AjaxLink<Void>("addTodoLink") {
+	AjaxLink addTodoLink = new AjaxLink<Void>("addTodoLink") {
 
-		@Override
-		public void onClick(AjaxRequestTarget target) {
-		    todoAddModal.show(target);
-		}
-	    });
+	    @Override
+	    public void onClick(AjaxRequestTarget target) {
+		todoAddModal.show(target);
+	    }
+	};
+
+	addTodoLink.setMarkupId("addTodoLink");
+	add(addTodoLink);
     }
 
     // private methods

@@ -36,6 +36,12 @@ public class ContextFormPage extends WebPage {
      */
     private Logger logger = LoggerFactory.getLogger(ContextFormPage.class);
 
+    /**
+     * Creates a new ContextFormPage instance.
+     *
+     * @param pageReference A reference to the parent page
+     * @param modalWindow A reference to this page's modal window
+     */
     public ContextFormPage(final PageReference pageReference,
 			   final ModalWindow modalWindow) {
 
@@ -49,20 +55,36 @@ public class ContextFormPage extends WebPage {
 	add(contextForm);
     }
 
+    /**
+     * Creates a new ContextForm instance containg the UI elements for
+     * creating a new Context entity.
+     */
     public class ContextForm extends Form<ValueMap> {
 
+	/**
+	 * A reference to the parent modal window for the form
+	 */
 	ModalWindow modalWindow = null;
 
+	/**
+	 * Creates a new ContextForm instance.
+	 *
+	 * @param id A reference to the placeholder ID in the target web page
+	 * @param modalWindow A reference to the parent ModalWindow
+	 */
 	public ContextForm(String id, final ModalWindow modalWindow) {
 
 	    super(id, new CompoundPropertyModel<ValueMap>(new ValueMap()));
 
+	    // add our components to the modal window
 	    this.modalWindow = modalWindow;
 	    setMarkupId(id);
 	    add(new TextField<String>("name").setType(String.class));
 	    add(new TextArea<String>("description").setType(String.class));
 
-	    add(new AjaxSubmitLink("formCancel", this) {
+	    // add a link to cancel the form action
+	    AjaxSubmitLink cancelLink =
+		new AjaxSubmitLink("formCancel", this) {
 
 		    @Override
 		    protected void onSubmit(AjaxRequestTarget target, Form form) {
@@ -74,8 +96,12 @@ public class ContextFormPage extends WebPage {
 			valueMap.put("description", "");
 			modalWindow.close(target);
 		    }
-		});
-	    add(new AjaxSubmitLink("formSubmit", this) {
+		};
+	    cancelLink.setMarkupId("formCancelLink");
+	    add(cancelLink);
+
+	    // add a link to create the new context
+	    AjaxSubmitLink submitLink = new AjaxSubmitLink("formSubmit", this) {
 
 		    @Override
 		    protected void onSubmit(AjaxRequestTarget target, Form form) {
@@ -97,7 +123,9 @@ public class ContextFormPage extends WebPage {
 			valueMap.put("description", "");
 			modalWindow.close(target);
 		    }
-		});
+		};
+	    submitLink.setMarkupId("formSubmitLink");
+	    add(submitLink);
 	}
     }
 }

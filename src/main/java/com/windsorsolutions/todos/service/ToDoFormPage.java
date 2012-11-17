@@ -45,6 +45,13 @@ public class ToDoFormPage extends WebPage {
      */
     private Logger logger = LoggerFactory.getLogger(ToDoFormPage.class);
 
+    /**
+     * Creates a new ToDoFormPage instance.
+     *
+     * @param pageReference A reference to the parent page
+     * @param modalWindow A reference to this page's modal window
+     * @param contextListModel A list model of Context entities
+     */
     public ToDoFormPage(final PageReference pageReference,
 			final ModalWindow modalWindow,
 			final IModel contextListModel) {
@@ -61,20 +68,35 @@ public class ToDoFormPage extends WebPage {
 	add(todoForm);
     }
 
+    /**
+     * Creates a new ToDoForm instance containing the UI elements for
+     * creating a new ToDo entity.
+     */
     public class ToDoForm extends Form<ValueMap> {
 
+	/**
+	 * A reference to the parent modal window for the form
+	 */
 	ModalWindow modalWindow = null;
 
+	/**
+	 * Creates a new ToDoForm instance.
+	 *
+	 * @param id A reference to the placeholder ID in the target web page
+	 * @param modalWindow A reference to the parent modal window
+	 */
 	public ToDoForm(String id, final ModalWindow modalWindow) {
 
 	    super(id, new CompoundPropertyModel<ValueMap>(new ValueMap()));
-	    setMarkupId(id);
 
+	    // add our components to the modal window
+	    setMarkupId(id);
 	    add(new TextArea<String>("content").setType(String.class));
 	    add(new DropDownChoice<Context>("context", contextListModel,
 					    new ChoiceRenderer<Context>("name",
 									"id")));
 
+	    // add a link to cancel the form action
 	    add(new AjaxSubmitLink("formCancel", this) {
 
 		    @Override
@@ -88,6 +110,8 @@ public class ToDoFormPage extends WebPage {
 			modalWindow.close(target);
 		    }
 		});
+
+	    // add a link to create the new ToDo entity
 	    add(new AjaxSubmitLink("formSubmit", this) {
 
 		    @Override
