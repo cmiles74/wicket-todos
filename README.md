@@ -28,6 +28,33 @@ the key "/jdbc/todosDataSource". If there is no object in JNDI under
 that key, it will fallback to the values in the "default.properties"
 file.
 
+## Integration Testing
+
+This project uses the Selenium library to do some simple browser
+integration testing. Presently these test utilize the Chrome browser
+through the Chrome WebDriver for Selenium. In order to run these tests
+you must first have both the Chrome web browser and the Chrome
+WebDriver installed.
+
+The Chrome web browser can be downloaded from Google.
+
+  [Google Chrome][http://www.google.com/chrome]
+
+The Chrome WebDriver is available on Google Code.
+
+  [Google Chrome Selenium WebDriver][http://code.gooogle.com/p/selenium/wiki/ChromeDriver]
+
+The Chrome WebDriver should be smart enough to find the location of
+the Chrome browser binary.
+
+To run the integration tests, invoke maven as follows:
+
+    mvn verify
+
+The "verify" target will run both the regular suite of unit tests and
+the integration tests. The integration tests will be run under the
+"failsafe" Maven test runner; this will ensure that Selenium is
+correctly shutdown in case of failure.
 
 [1]: http://www.springframework.org
 [2]: http://en.wikipedia.org/wiki/Java_Peristence_API
