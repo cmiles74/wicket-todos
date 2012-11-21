@@ -79,8 +79,16 @@ public class ContextFormPage extends WebPage {
 	    // add our components to the modal window
 	    this.modalWindow = modalWindow;
 	    setMarkupId(id);
-	    add(new TextField<String>("name").setType(String.class));
-	    add(new TextArea<String>("description").setType(String.class));
+	    TextField textfieldName = new TextField<String>("name");
+	    textfieldName.setType(String.class);
+	    textfieldName.setMarkupId("contextAddNameField");
+	    add(textfieldName);
+
+	    TextArea textareaDescription =
+		new TextArea<String>("description");
+	    textareaDescription.setType(String.class);
+	    textareaDescription.setMarkupId("contextAddDescriptionField");
+	    add(textareaDescription);
 
 	    // add a link to cancel the form action
 	    AjaxSubmitLink cancelLink =

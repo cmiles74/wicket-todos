@@ -11,6 +11,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import org.openqa.selenium.support.ui.ExpectedCondition;
+import java.util.Iterator;
+import org.openqa.selenium.support.ui.ExpectedConditions;
 
 public class ToDoHomePageTest {
 
@@ -45,33 +47,29 @@ public class ToDoHomePageTest {
 	List contexts = contextsContainer.findElements(By.className("context"));
 	int startNumContexts = contexts.size();
 	logger.debug("Starting with " + startNumContexts + " Context entities");
+	logger.debug("Window handles: " + webDriver.getWindowHandles().size());
 
 	// get the add context button and click it
 	WebElement addContext = webDriver.findElement(By.id("addContextLink"));
 	addContext.click();
-	WebDriverWait wait = new WebDriverWait(webDriver, 5);
-	wait.until(new ExpectedCondition<WebElement>() {
-		public WebElement apply(final WebDriver webDriver) {
-		    return(webDriver.findElement(By.id("contextAddForm")));
-		}
-	    });
 
-	// get a handle on our form
-	WebElement addContextModal = webDriver.findElement(By.id("contextAddForm"));
+	// wait for the form
+	WebDriverWait wait = new WebDriverWait(webDriver, 10);
+	wait.until(ExpectedConditions.visibilityOfElementLocated(By.id("contextAddNameField")));
 
 	// fill in the form
-	WebElement nameField = addContextModal.findElement(By.name("name"));
+	WebElement nameField = webDriver.findElement(By.id("contextAddNameField"));
 	nameField.click();
 	nameField.sendKeys("Test Context");
 
 	WebElement descriptionField =
-	    addContextModal.findElement(By.name("description"));
+	    webDriver.findElement(By.id("contextAddDescriptionField"));
 	descriptionField.click();
 	descriptionField.sendKeys("For all of the testing.");
 
 	// submit the form
 	WebElement submitButton =
-	    addContextModal.findElement(By.id("formSubmitLink"));
+	    webDriver.findElement(By.id("formSubmitLink"));
 	submitButton.click();
 
 	// check for our new context
