@@ -16,7 +16,7 @@ module.exports = function(grunt) {
 
     var
     testsJs = [
-	'src/main/webapp/js-test/tests/tests.js',
+	'src/test/webapp/js-test/tests/tests.js',
     ],
     gruntJs = [
 	'grunt.js'
