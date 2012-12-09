@@ -46,6 +46,9 @@ public class App extends WebApplication {
 	BootstrapSettings settings = new BootstrapSettings();
 	settings.minify(false); // use minimized version of all bootstrap references
 	Bootstrap.install(this, settings);
+
+	// mount the home page
+	mountPage("/index", ToDoHomePage.class);
     }
 
     @Override
