@@ -89,18 +89,6 @@
       <version>1.0.1.Final</version>
     </dependency>
 
-    <!-- Selenium for Browser Integration Tests-->
-    <dependency>
-      <groupId>org.seleniumhq.selenium</groupId>
-      <artifactId>selenium-java</artifactId>
-      <version>2.26.0</version>
-    </dependency>
-    <dependency>
-      <groupId>org.seleniumhq.selenium</groupId>
-      <artifactId>selenium-chrome-driver</artifactId>
-      <version>2.26.0</version>
-    </dependency>
-
     <!-- SLF4J for Wicket Logging -->
     <dependency>
       <groupId>org.slf4j</groupId>
