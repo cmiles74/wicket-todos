@@ -1,4 +1,3 @@
-
 var getIframe = function() {
 	return $q('#applicationFrame');
 }
@@ -33,15 +32,15 @@ var jQueryWithContext = function(selector) {
  * Registers a callback when Wicket Ajax call is completed
  */
 var onAjaxComplete = function(iframe, toExecute) {
-	
+
 	// unregister any leaked subscriber
 	iframe.jQuery(iframe.document).off('/ajax/call/complete');
-	
+
 	// register the requested subscriber
 	iframe.Wicket.Event.subscribe('/ajax/call/complete', function(jqEvent, attributes, jqXHR, textStatus) {
 		// immediately unregister this subscriber
 		iframe.jQuery(iframe.document).off('/ajax/call/complete');
-		
+
 		// call back
 		toExecute.call(iframe);
 	});
@@ -63,4 +62,12 @@ var debug = function(iframe) {
 	"use strict";
 
 	console.log('Current url: ', iframe.window.location.href);
+}
+
+var getModalDocument = function($) {
+    return($($(".wicket-modal")[0]).find("iframe").contents());
+}
+
+var getModalElement = function($, formId) {
+    return(getModalDocument($).find(formId));
 }
