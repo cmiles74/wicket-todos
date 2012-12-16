@@ -1,4 +1,4 @@
-package com.windsorsolutions.todos.service;
+package com.windsorsolutions.todos.web;
 
 import org.apache.wicket.markup.html.WebPage;
 import org.apache.wicket.request.mapper.parameter.PageParameters;

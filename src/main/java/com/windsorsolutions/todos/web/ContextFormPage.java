@@ -1,4 +1,4 @@
-package com.windsorsolutions.todos.service;
+package com.windsorsolutions.todos.web;
 
 import org.apache.wicket.spring.injection.annot.*;
 import org.apache.wicket.markup.html.form.Form;

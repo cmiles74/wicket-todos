@@ -2,7 +2,7 @@ package com.windsorsolutions.todos;
 
 import org.apache.wicket.protocol.http.WebApplication;
 import org.apache.wicket.spring.injection.annot.SpringComponentInjector;
-import com.windsorsolutions.todos.service.ToDoHomePage;
+import com.windsorsolutions.todos.web.ToDoHomePage;
 import org.springframework.beans.factory.annotation.Autowired;
 import com.windsorsolutions.todos.dao.ToDoJpaDao;
 import com.windsorsolutions.todos.dao.ContextJpaDao;
