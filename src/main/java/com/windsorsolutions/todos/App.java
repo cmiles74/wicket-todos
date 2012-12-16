@@ -6,7 +6,6 @@ import com.windsorsolutions.todos.service.ToDoHomePage;
 import org.springframework.beans.factory.annotation.Autowired;
 import com.windsorsolutions.todos.dao.ToDoJpaDao;
 import com.windsorsolutions.todos.dao.ContextJpaDao;
-import com.windsorsolutions.todos.entities.Context;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import de.agilecoders.wicket.settings.BootstrapSettings;

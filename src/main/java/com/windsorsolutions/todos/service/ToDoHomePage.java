@@ -6,6 +6,8 @@ import org.apache.wicket.spring.injection.annot.*;
 import org.apache.wicket.markup.html.basic.Label;
 import com.windsorsolutions.todos.dao.ToDoDao;
 import com.windsorsolutions.todos.dao.ContextDao;
+
+import java.util.HashMap;
 import java.util.List;
 import com.windsorsolutions.todos.entities.Context;
 import org.apache.wicket.markup.html.list.PropertyListView;
@@ -83,6 +85,7 @@ public class ToDoHomePage extends WebPage {
 	final ModalWindow contextAddModal =
 	    buildContextAddModalWindow("contextAddModal", contextListModel,
 				       contextsContainer);
+	contextAddModal.setMarkupId("contextAddModal");
 	add(contextAddModal);
 
 	// setup our modal for adding new todo items

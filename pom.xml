@@ -216,7 +216,7 @@
 	      <executable>grunt</executable>
 	      <arguments>
 		<argument>qunit</argument>
-		<!--<argument>-v</argument>-->
+		<argument>--debug</argument>
 	      </arguments>
 	    </configuration>
 	  </execution>
