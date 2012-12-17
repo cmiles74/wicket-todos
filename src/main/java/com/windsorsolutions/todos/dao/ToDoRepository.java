@@ -1,4 +1,4 @@
-package com.windsorsolutions.todos.service;
+package com.windsorsolutions.todos.dao;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 
