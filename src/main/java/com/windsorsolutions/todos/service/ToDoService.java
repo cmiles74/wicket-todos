@@ -2,6 +2,7 @@ package com.windsorsolutions.todos.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
 
+import com.windsorsolutions.todos.dao.ToDoRepository;
 import com.windsorsolutions.todos.entities.Context;
 import com.windsorsolutions.todos.entities.ToDo;
 
