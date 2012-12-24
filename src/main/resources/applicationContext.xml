@@ -17,10 +17,9 @@
 	   http://www.springframework.org/schema/data/jpa/spring-jpa.xsd">
 
   <tx:annotation-driven transaction-manager="transactionManager"/>
+  <jpa:repositories base-package="com.windsorsolutions.todos.dao"/>
   <context:component-scan base-package="com.windsorsolutions.todos"/>
   <context:annotation-config/>
-
-  <jpa:repositories base-package="com.windsorsolutions.todos.service"/>
 
   <bean id="transactionManager"
 	class="org.springframework.orm.jpa.JpaTransactionManager">
@@ -32,7 +31,7 @@
   <bean id="entityManagerFactory"
 	class="org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean">
     <property name="dataSource" ref="dataSource"/>
-    <property name="packagesToScan" value="com.windsorsolutions.todos"/>
+    <property name="packagesToScan" value="com.windsorsolutions.todos.entities"/>
     <property name="jpaVendorAdapter">
       <bean class="org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter">
 	<property name="databasePlatform"

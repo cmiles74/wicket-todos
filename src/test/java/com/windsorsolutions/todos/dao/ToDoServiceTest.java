@@ -1,27 +1,31 @@
 package com.windsorsolutions.todos.dao;
 
-import org.junit.*;
-import org.springframework.test.*;
-import org.springframework.test.context.*;
-import org.springframework.transaction.annotation.*;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.test.context.junit4.AbstractTransactionalJUnit4SpringContextTests;
-import org.springframework.test.context.ActiveProfiles;
 import java.util.List;
+
+import org.junit.Assert;
+import org.junit.Test;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.test.context.ActiveProfiles;
+import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.junit4.AbstractTransactionalJUnit4SpringContextTests;
+import org.springframework.transaction.annotation.Transactional;
+
 import com.windsorsolutions.todos.entities.Context;
 import com.windsorsolutions.todos.entities.ToDo;
+import com.windsorsolutions.todos.service.ContextService;
+import com.windsorsolutions.todos.service.ToDoService;
 
 @ContextConfiguration(locations={"classpath:applicationContext.xml"})
 @ActiveProfiles("test")
 @Transactional
-public class ToDoDaoTest
+public class ToDoServiceTest
     extends AbstractTransactionalJUnit4SpringContextTests {
 
     @Autowired
-    ToDoDao todoDao = null;
+    private ToDoService toDoService;
 
     @Autowired
-    ContextDao contextDao = null;
+    private ContextService contextService;
 
     @Test
     public void testCreateAndRemove() {
@@ -30,19 +34,19 @@ public class ToDoDaoTest
 	Context context = new Context();
 	context.setName("Office");
 	context.setDescription("Wherever my laptop is.");
-	context = contextDao.persist(context);
+	context = contextService.save(context);
 
 	// create a todo item
 	ToDo todo = new ToDo();
 	todo.setContext(context);
 	todo.setContent("Code up the sample todo application.");
-	todo = todoDao.persist(todo);
+	todo = toDoService.save(todo);
 	Assert.assertNotNull(todo.getId());
 
 	// remove context and todo
-	todoDao.remove(todo);
-	contextDao.remove(context);
-	todo = todoDao.get(todo.getId());
+	toDoService.delete(todo);
+	contextService.delete(context);
+	todo = toDoService.find(todo.getId());
 	Assert.assertNull(todo);
     }
 
@@ -53,25 +57,33 @@ public class ToDoDaoTest
 	Context context = new Context();
 	context.setName("Office");
 	context.setDescription("Wherever my laptop is.");
-	context = contextDao.persist(context);
+	context = contextService.save(context);
 
 	// create a todo item
 	ToDo todo = new ToDo();
 	todo.setContext(context);
 	todo.setContent("Code up the sample todo application.");
-	todo = todoDao.persist(todo);
+	todo = toDoService.save(todo);
 
 	// get all todos
-	List todos = todoDao.getAll();
-	Assert.assertEquals(todos.size(), 1);
+	Iterable iterable = toDoService.findAll();
+
+	int count = 0;
+	ToDo toDoListed = null;
+	while(iterable.iterator().hasNext()) {
+
+	    toDoListed = (ToDo) iterable.iterator().next();
+	    count += 1;
+	}
+
+	Assert.assertEquals(count, 1);
 
 	// verify todos
-	ToDo todoListed = (ToDo) todos.get(0);
-	Assert.assertEquals(todoListed.getId(), todo.getId());
+	Assert.assertEquals(toDoListed.getId(), todo.getId());
 
 	// remove todo and context
-	todoDao.remove(todo);
-	contextDao.remove(context);
+	toDoService.delete(todo);
+	contextService.delete(context);
     }
 
     @Test
@@ -81,22 +93,22 @@ public class ToDoDaoTest
 	Context context = new Context();
 	context.setName("Office");
 	context.setDescription("Wherever my laptop is.");
-	context = contextDao.persist(context);
+	context = contextService.save(context);
 
 	// create a todo item
 	ToDo todo = new ToDo();
 	todo.setContext(context);
 	todo.setContent("Code up the sample todo application.");
-	todo = todoDao.persist(todo);
+	todo = toDoService.save(todo);
 
 	// update the todo
 	todo.setContent("I mean, like, code it up now!");
-	todo = todoDao.persist(todo);
+	todo = toDoService.save(todo);
 	Assert.assertEquals(todo.getContent(), "I mean, like, code it up now!");
 
 	// remove the todo and context
-	todoDao.remove(todo);
-	contextDao.remove(context);
+	toDoService.delete(todo);
+	contextService.delete(context);
     }
 
     @Test
@@ -106,24 +118,32 @@ public class ToDoDaoTest
 	Context context = new Context();
 	context.setName("Office");
 	context.setDescription("Wherever my laptop is.");
-	context = contextDao.persist(context);
+	context = contextService.save(context);
 
 	// create a todo item
 	ToDo todo = new ToDo();
 	todo.setContext(context);
 	todo.setContent("Code up the sample todo application.");
-	todo = todoDao.persist(todo);
+	todo = toDoService.save(todo);
 
 	// get all todos
-	List todos = todoDao.getWithContext(context);
-	Assert.assertEquals(todos.size(), 1);
+	Iterable iterable = toDoService.findByContext(context);
+
+	int count = 0;
+	ToDo toDoListed = null;
+	while(iterable.iterator().hasNext()) {
+
+	    toDoListed = (ToDo) iterable.iterator().next();
+	    count += 1;
+	}
+
+	Assert.assertEquals(count, 1);
 
 	// verify todos
-	ToDo todoListed = (ToDo) todos.get(0);
-	Assert.assertEquals(todoListed.getId(), todo.getId());
+	Assert.assertEquals(toDoListed.getId(), todo.getId());
 
 	// remove todo and context
-	todoDao.remove(todo);
-	contextDao.remove(context);
+	toDoService.delete(todo);
+	contextService.delete(context);
     }
 }

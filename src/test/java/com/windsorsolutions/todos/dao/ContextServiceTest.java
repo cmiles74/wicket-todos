@@ -1,23 +1,25 @@
 package com.windsorsolutions.todos.dao;
 
-import org.junit.*;
-import org.springframework.test.*;
-import org.springframework.test.context.*;
-import org.springframework.transaction.annotation.*;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.test.context.junit4.AbstractTransactionalJUnit4SpringContextTests;
-import org.springframework.test.context.ActiveProfiles;
 import java.util.List;
+import org.junit.Assert;
+import org.junit.Test;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.test.context.ActiveProfiles;
+import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.junit4.AbstractTransactionalJUnit4SpringContextTests;
+import org.springframework.transaction.annotation.Transactional;
+
 import com.windsorsolutions.todos.entities.Context;
+import com.windsorsolutions.todos.service.ContextService;
 
 @ContextConfiguration(locations={"classpath:applicationContext.xml"})
 @ActiveProfiles("test")
 @Transactional
-public class ContextDaoTest
+public class ContextServiceTest
     extends AbstractTransactionalJUnit4SpringContextTests {
 
     @Autowired
-    ContextDao contextDao = null;
+    private ContextService contextService;
 
     @Test
     public void testCreateAndRemove() {
@@ -26,12 +28,12 @@ public class ContextDaoTest
 	Context context = new Context();
 	context.setName("Office");
 	context.setDescription("Wherever my laptop is.");
-	context = contextDao.persist(context);
+	context = contextService.save(context);
 	Assert.assertNotNull(context.getId());
 
 	// remove a context
-	contextDao.remove(context);
-	context = contextDao.get(context.getId());
+	contextService.delete(context);
+	context = contextService.find(context.getId());
 	Assert.assertNull(context);
     }
 
@@ -42,15 +44,22 @@ public class ContextDaoTest
 	Context context = new Context();
 	context.setName("Office");
 	context.setDescription("Wherever my laptop is.");
-	context = contextDao.persist(context);
+	context = contextService.save(context);
 	Assert.assertNotNull(context.getId());
 
 	// get all contexts
-	List contexts = contextDao.getAll();
-	Assert.assertEquals(contexts.size(), 1);
+	Iterable iterable = contextService.findAll();
 
-	// verify contexts
-	Context contextListed = (Context) contexts.get(0);
+	int count = 0;
+	Context contextListed = null;
+	while(iterable.iterator().hasNext()) {
+	    contextListed = (Context) iterable.iterator().next();
+	    count += 1;
+	}
+
+	Assert.assertEquals(count, 1);
+
+	// verify context
 	Assert.assertEquals(contextListed.getId(), context.getId());
     }
 
@@ -61,14 +70,14 @@ public class ContextDaoTest
 	Context context = new Context();
 	context.setName("Office");
 	context.setDescription("Wherever my laptop is.");
-	context = contextDao.persist(context);
+	context = contextService.save(context);
 
 	// fetch the context
-	Context contextFetched = contextDao.get(context.getId());
+	Context contextFetched = contextService.find(context.getId());
 	Assert.assertNotNull(contextFetched);
 
 	// remove the context
-	contextDao.remove(context);
+	contextService.delete(context);
     }
 
     @Test
@@ -78,14 +87,14 @@ public class ContextDaoTest
 	Context context = new Context();
 	context.setName("Office");
 	context.setDescription("Wherever my laptop is.");
-	context = contextDao.persist(context);
+	context = contextService.save(context);
 
 	// update the context
 	context.setName("Home");
-	context = contextDao.merge(context);
+	context = contextService.save(context);
 	Assert.assertEquals(context.getName(), "Home");
 
 	// remove the context
-	contextDao.remove(context);
+	contextService.delete(context);
     }
 }

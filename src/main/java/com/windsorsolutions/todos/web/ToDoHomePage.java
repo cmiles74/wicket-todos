@@ -1,34 +1,32 @@
 package com.windsorsolutions.todos.web;
 
-import org.apache.wicket.markup.html.WebPage;
-import org.apache.wicket.request.mapper.parameter.PageParameters;
-import org.apache.wicket.spring.injection.annot.*;
-import org.apache.wicket.markup.html.basic.Label;
-import com.windsorsolutions.todos.dao.ToDoDao;
-import com.windsorsolutions.todos.dao.ContextDao;
+import java.util.Locale;
 
-import java.util.HashMap;
-import java.util.List;
-import com.windsorsolutions.todos.entities.Context;
-import org.apache.wicket.markup.html.list.PropertyListView;
-import org.apache.wicket.markup.html.list.ListItem;
-import org.apache.wicket.model.LoadableDetachableModel;
-import org.apache.wicket.extensions.ajax.markup.html.modal.ModalWindow;
-import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.Page;
+import org.apache.wicket.ajax.AjaxRequestTarget;
+import org.apache.wicket.ajax.markup.html.AjaxLink;
+import org.apache.wicket.extensions.ajax.markup.html.modal.ModalWindow;
+import org.apache.wicket.markup.html.WebMarkupContainer;
+import org.apache.wicket.markup.html.WebPage;
+import org.apache.wicket.markup.html.basic.Label;
+import org.apache.wicket.markup.html.list.ListItem;
+import org.apache.wicket.markup.html.list.ListView;
+import org.apache.wicket.markup.html.list.PropertyListView;
+import org.apache.wicket.model.IModel;
+import org.apache.wicket.model.LoadableDetachableModel;
+import org.apache.wicket.model.Model;
+import org.apache.wicket.spring.injection.annot.SpringBean;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.apache.wicket.ajax.markup.html.AjaxLink;
-import org.apache.wicket.markup.html.WebMarkupContainer;
+
+import com.windsorsolutions.todos.entities.Context;
 import com.windsorsolutions.todos.entities.ToDo;
-import de.agilecoders.wicket.markup.html.bootstrap.html.HtmlTag;
-import java.util.Locale;
-import de.agilecoders.wicket.markup.html.bootstrap.navbar.Navbar;
-import org.apache.wicket.model.Model;
-import de.agilecoders.wicket.markup.html.bootstrap.navbar.NavbarButton;
+import com.windsorsolutions.todos.service.ContextService;
+import com.windsorsolutions.todos.service.ToDoService;
+
 import de.agilecoders.wicket.markup.html.bootstrap.behavior.BootstrapBaseBehavior;
-import org.apache.wicket.model.IModel;
-import org.apache.wicket.markup.html.list.ListView;
+import de.agilecoders.wicket.markup.html.bootstrap.html.HtmlTag;
+import de.agilecoders.wicket.markup.html.bootstrap.navbar.Navbar;
 
 public class ToDoHomePage extends WebPage {
 
@@ -36,13 +34,13 @@ public class ToDoHomePage extends WebPage {
      * Data access object for managing ToDo entities.
      */
     @SpringBean
-    private ToDoDao todoDao;
+    private ToDoService toDoService;
 
     /**
      * Data access object for managing Context entities.
      */
     @SpringBean
-    private ContextDao contextDao;
+    private ContextService contextService;
 
     /**
      * Logger instance
@@ -68,7 +66,7 @@ public class ToDoHomePage extends WebPage {
 	// fetch our contexts
 	LoadableDetachableModel contextListModel = new LoadableDetachableModel() {
 		protected Object load() {
-		    return(contextDao.getAll());
+		    return(contextService.findAll());
 		}
 	    };
 
@@ -147,7 +145,7 @@ public class ToDoHomePage extends WebPage {
 		LoadableDetachableModel todoListModel =
 		new LoadableDetachableModel() {
 		    protected Object load() {
-			return(todoDao.getWithContext(context));
+			return(toDoService.findByContext(context));
 		    }
 		};
 
@@ -189,8 +187,8 @@ public class ToDoHomePage extends WebPage {
 
 			@Override
 			public void onClick(AjaxRequestTarget target) {
-			    ToDo todoRemove = todoDao.get(todo.getId());
-			    todoDao.remove(todoRemove);
+			    ToDo todoRemove = toDoService.find(todo.getId());
+			    toDoService.delete(todoRemove);
 			    contextListModel.detach();
 			    target.add(contextsContainer);
 			}

@@ -1,24 +1,26 @@
 package com.windsorsolutions.todos.web;
 
-import org.apache.wicket.spring.injection.annot.*;
+import java.util.Locale;
+
+import org.apache.wicket.PageReference;
+import org.apache.wicket.ajax.AjaxRequestTarget;
+import org.apache.wicket.ajax.markup.html.form.AjaxSubmitLink;
+import org.apache.wicket.extensions.ajax.markup.html.modal.ModalWindow;
+import org.apache.wicket.markup.html.WebPage;
 import org.apache.wicket.markup.html.form.Form;
-import org.apache.wicket.model.CompoundPropertyModel;
-import org.apache.wicket.util.value.ValueMap;
-import org.apache.wicket.markup.html.form.TextField;
 import org.apache.wicket.markup.html.form.TextArea;
+import org.apache.wicket.markup.html.form.TextField;
+import org.apache.wicket.model.CompoundPropertyModel;
+import org.apache.wicket.spring.injection.annot.SpringBean;
+import org.apache.wicket.util.value.ValueMap;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import com.windsorsolutions.todos.dao.ContextDao;
+
 import com.windsorsolutions.todos.entities.Context;
-import java.util.List;
-import org.apache.wicket.markup.html.WebPage;
-import org.apache.wicket.PageReference;
-import org.apache.wicket.extensions.ajax.markup.html.modal.ModalWindow;
-import org.apache.wicket.ajax.markup.html.form.AjaxSubmitLink;
-import org.apache.wicket.ajax.AjaxRequestTarget;
-import de.agilecoders.wicket.markup.html.bootstrap.html.HtmlTag;
-import java.util.Locale;
+import com.windsorsolutions.todos.service.ContextService;
+
 import de.agilecoders.wicket.markup.html.bootstrap.behavior.BootstrapBaseBehavior;
+import de.agilecoders.wicket.markup.html.bootstrap.html.HtmlTag;
 
 /**
  * Provides a form for creating a new Context entity.
@@ -29,7 +31,7 @@ public class ContextFormPage extends WebPage {
      * Data access object for managing Context entities.
      */
     @SpringBean
-    private ContextDao contextDao;
+    private ContextService contextService;
 
     /**
      * Logger instance
@@ -124,7 +126,7 @@ public class ContextFormPage extends WebPage {
 			Context context = new Context();
 			context.setName((String) valueMap.get("name"));
 			context.setDescription((String) valueMap.get("description"));
-			context = contextDao.persist(context);
+			context = contextService.save(context);
 			logger.debug("Context save with ID " + context.getId());
 
 			valueMap.put("name", "");

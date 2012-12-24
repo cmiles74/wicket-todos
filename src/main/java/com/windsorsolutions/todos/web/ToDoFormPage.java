@@ -1,27 +1,29 @@
 package com.windsorsolutions.todos.web;
 
-import org.apache.wicket.markup.html.WebPage;
-import com.windsorsolutions.todos.dao.ToDoDao;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.apache.wicket.spring.injection.annot.*;
-import org.apache.wicket.markup.html.form.Form;
-import org.apache.wicket.model.CompoundPropertyModel;
-import org.apache.wicket.util.value.ValueMap;
-import org.apache.wicket.markup.html.form.TextField;
-import org.apache.wicket.markup.html.form.TextArea;
-import org.apache.wicket.model.IModel;
+import java.util.Locale;
+
 import org.apache.wicket.PageReference;
-import org.apache.wicket.extensions.ajax.markup.html.modal.ModalWindow;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.markup.html.form.AjaxSubmitLink;
-import org.apache.wicket.markup.html.form.DropDownChoice;
-import com.windsorsolutions.todos.entities.Context;
+import org.apache.wicket.extensions.ajax.markup.html.modal.ModalWindow;
+import org.apache.wicket.markup.html.WebPage;
 import org.apache.wicket.markup.html.form.ChoiceRenderer;
+import org.apache.wicket.markup.html.form.DropDownChoice;
+import org.apache.wicket.markup.html.form.Form;
+import org.apache.wicket.markup.html.form.TextArea;
+import org.apache.wicket.model.CompoundPropertyModel;
+import org.apache.wicket.model.IModel;
+import org.apache.wicket.spring.injection.annot.SpringBean;
+import org.apache.wicket.util.value.ValueMap;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import com.windsorsolutions.todos.entities.Context;
 import com.windsorsolutions.todos.entities.ToDo;
-import de.agilecoders.wicket.markup.html.bootstrap.html.HtmlTag;
-import java.util.Locale;
+import com.windsorsolutions.todos.service.ToDoService;
+
 import de.agilecoders.wicket.markup.html.bootstrap.behavior.BootstrapBaseBehavior;
+import de.agilecoders.wicket.markup.html.bootstrap.html.HtmlTag;
 
 
 /**
@@ -33,7 +35,7 @@ public class ToDoFormPage extends WebPage {
      * Data access object for managing ToDo entities.
      */
     @SpringBean
-    private ToDoDao todoDao;
+    private ToDoService toDoService;
 
     /**
      * List of available Contexts.
@@ -127,7 +129,7 @@ public class ToDoFormPage extends WebPage {
 			ToDo todo = new ToDo();
 			todo.setContext((Context) valueMap.get("context"));
 			todo.setContent((String) valueMap.get("content"));
-			todo = todoDao.persist(todo);
+			todo = toDoService.save(todo);
 			logger.debug("ToDo saved with ID " + todo.getId());
 
 			valueMap.put("content", "");

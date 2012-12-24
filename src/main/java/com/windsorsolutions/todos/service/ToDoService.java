@@ -1,25 +1,14 @@
 package com.windsorsolutions.todos.service;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import java.util.List;
 
-import com.windsorsolutions.todos.dao.ToDoRepository;
 import com.windsorsolutions.todos.entities.Context;
 import com.windsorsolutions.todos.entities.ToDo;
 
 /**
- * Provides a service for managing ToDo entities.
+ * Provides an interface for managing ToDo entities.
  */
-public class ToDoService {
-
-    @Autowired
-    public ToDoRepository repository;
-
-    /**
-     * Creates a new ToDoService instance.
-     */
-    public ToDoService() {
-
-    }
+public interface ToDoService {
 
     /**
      * Persists the provided ToDo and returns a reference to the new,
@@ -28,21 +17,14 @@ public class ToDoService {
      * @param ToDo Instance to be persisted
      * @return Reference to the new, perisitent instance.
      */
-    public ToDo save(ToDo todo) {
-
-	todo = repository.save(todo);
-	return(todo);
-    }
+    public ToDo save(ToDo todo);
 
     /**
      * Removes the provided instance from the persistent store.
      *
      * @param ToDo Instance to be removed
      */
-    public void delete(ToDo todo) {
-
-	repository.delete(todo.getId());
-    }
+    public void delete(ToDo todo);
 
     /**
      * Returns the instance with the matching unique ID.
@@ -50,18 +32,14 @@ public class ToDoService {
      * @param id Unique ID of the instance to fetch
      * @return ToDo instance with the matching unique ID
      */
-    public ToDo find(Long id) {
-	return(repository.findOne(id));
-    }
+    public ToDo find(Long id);
 
     /**
      * Returns an Iterable of all ToDo instances.
      *
      * @return an Iterable of ToDo instances.
      */
-    public Iterable findAll() {
-	return(repository.findAll());
-    }
+    public List findAll();
 
     /**
      * Returns an Iterable of all ToDo instances related to
@@ -70,7 +48,5 @@ public class ToDoService {
      * @param Context Instance used for matching
      * @return an Iterable of ToDo instances
      */
-    public Iterable findByContext(Context context) {
-	return(repository.findByContext(context));
-    }
+    public List findByContext(Context context);
 }
