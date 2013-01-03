@@ -98,7 +98,6 @@ Test.prototype = {
 		});
 
 		// allow utility functions to access the current test environment
-		// TODO why??
 		QUnit.current_testEnvironment = this.testEnvironment;
 
 		if ( !config.pollution ) {

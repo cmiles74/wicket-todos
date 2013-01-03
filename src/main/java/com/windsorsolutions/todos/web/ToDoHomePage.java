@@ -156,8 +156,6 @@ public class ToDoHomePage extends WebPage {
         return (listView);
     }
 
-    ;
-
     /**
      * Returns a ListView of ToDo entities. This view requires a
      * handle on the parent list of Context entities and it's matching
