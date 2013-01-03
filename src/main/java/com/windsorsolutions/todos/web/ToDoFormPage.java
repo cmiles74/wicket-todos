@@ -1,14 +1,13 @@
 package com.windsorsolutions.todos.web;
 
+import com.windsorsolutions.todos.service.ToDoService;
 import org.apache.wicket.markup.html.WebPage;
-import com.windsorsolutions.todos.dao.ToDoDao;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.apache.wicket.spring.injection.annot.*;
 import org.apache.wicket.markup.html.form.Form;
 import org.apache.wicket.model.CompoundPropertyModel;
 import org.apache.wicket.util.value.ValueMap;
-import org.apache.wicket.markup.html.form.TextField;
 import org.apache.wicket.markup.html.form.TextArea;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.PageReference;
@@ -30,10 +29,10 @@ import de.agilecoders.wicket.markup.html.bootstrap.behavior.BootstrapBaseBehavio
 public class ToDoFormPage extends WebPage {
 
     /**
-     * Data access object for managing ToDo entities.
+     * Service object for managing ToDo entities.
      */
     @SpringBean
-    private ToDoDao todoDao;
+    private ToDoService toDoService;
 
     /**
      * List of available Contexts.
@@ -127,7 +126,7 @@ public class ToDoFormPage extends WebPage {
 			ToDo todo = new ToDo();
 			todo.setContext((Context) valueMap.get("context"));
 			todo.setContent((String) valueMap.get("content"));
-			todo = todoDao.persist(todo);
+			todo = toDoService.save(todo);
 			logger.debug("ToDo saved with ID " + todo.getId());
 
 			valueMap.put("content", "");

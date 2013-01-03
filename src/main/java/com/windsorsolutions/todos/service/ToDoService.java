@@ -2,12 +2,16 @@ package com.windsorsolutions.todos.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
 
+import com.windsorsolutions.todos.dao.ToDoRepository;
 import com.windsorsolutions.todos.entities.Context;
 import com.windsorsolutions.todos.entities.ToDo;
+import org.springframework.stereotype.Repository;
+import org.springframework.stereotype.Service;
 
 /**
  * Provides a service for managing ToDo entities.
  */
+@Service
 public class ToDoService {
 
     @Autowired
@@ -24,7 +28,7 @@ public class ToDoService {
      * Persists the provided ToDo and returns a reference to the new,
      * persistent instance.
      *
-     * @param ToDo Instance to be persisted
+     * @param todo Instance to be persisted
      * @return Reference to the new, perisitent instance.
      */
     public ToDo save(ToDo todo) {
@@ -36,7 +40,7 @@ public class ToDoService {
     /**
      * Removes the provided instance from the persistent store.
      *
-     * @param ToDo Instance to be removed
+     * @param todo Instance to be removed
      */
     public void delete(ToDo todo) {
 
@@ -66,7 +70,7 @@ public class ToDoService {
      * Returns an Iterable of all ToDo instances related to
      * the provided Context instance.
      *
-     * @param Context Instance used for matching
+     * @param context Instance used for matching
      * @return an Iterable of ToDo instances
      */
     public Iterable findByContext(Context context) {

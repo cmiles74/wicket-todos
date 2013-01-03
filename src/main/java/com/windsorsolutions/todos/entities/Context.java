@@ -35,7 +35,7 @@ public class Context implements Serializable {
 
     }
 
-    // acessor and mutator methods
+    // accessor and mutator methods
 
     public void setId(Long id) {
 	this.id = id;

@@ -1,13 +1,14 @@
 package com.windsorsolutions.todos.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
-
 import com.windsorsolutions.todos.dao.ContextRepository;
 import com.windsorsolutions.todos.entities.Context;
+import org.springframework.stereotype.Service;
 
 /**
  * Provides a service for managing Context entities.
  */
+@Service
 public class ContextService {
 
     @Autowired
@@ -24,7 +25,7 @@ public class ContextService {
      * Persists the provided Context and returns a reference to the
      * new, persistent instance.
      *
-     * @param Context Instance to be persisted
+     * @param context Instance to be persisted
      * @return Reference to the new, persistent instance
      */
     public Context save(Context context) {
@@ -36,7 +37,7 @@ public class ContextService {
     /**
      * Removes the provided instance from the persistent store.
      *
-     * @param Context Instance to be removed
+     * @param context Instance to be removed
      */
     public void delete(Context context) {
 
