@@ -1,14 +1,18 @@
 package com.windsorsolutions.todos.service;
 
+import java.util.List;
+import javax.inject.Named;
 import org.springframework.beans.factory.annotation.Autowired;
-
+import org.springframework.transaction.annotation.Transactional;
 import com.windsorsolutions.todos.dao.ContextRepository;
 import com.windsorsolutions.todos.entities.Context;
 
 /**
  * Provides a service for managing Context entities.
  */
-public class ContextService {
+@Named
+@Transactional
+public class ContextServiceImpl implements ContextService {
 
     @Autowired
     public ContextRepository repository;
@@ -16,7 +20,7 @@ public class ContextService {
     /**
      * Creates a new ContextService instance.
      */
-    public ContextService() {
+    public ContextServiceImpl() {
 
     }
 
@@ -54,11 +58,11 @@ public class ContextService {
     }
 
     /**
-     * Returns an Iterable of all Context instances.
+     * Returns a List of all Context instances.
      *
-     * @return An Iterable of Context instances
+     * @return A List of Context instances
      */
-    public Iterable findAll() {
+    public List findAll() {
 	return(repository.findAll());
     }
 }
