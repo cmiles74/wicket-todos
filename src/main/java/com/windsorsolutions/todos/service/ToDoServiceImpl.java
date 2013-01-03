@@ -32,7 +32,7 @@ public class ToDoServiceImpl implements ToDoService {
      * Persists the provided ToDo and returns a reference to the new,
      * persistent instance.
      *
-     * @param ToDo Instance to be persisted
+     * @param todo Instance to be persisted
      * @return Reference to the new, perisitent instance.
      */
     public ToDo save(ToDo todo) {
@@ -44,7 +44,7 @@ public class ToDoServiceImpl implements ToDoService {
     /**
      * Removes the provided instance from the persistent store.
      *
-     * @param ToDo Instance to be removed
+     * @param todo Instance to be removed
      */
     public void delete(ToDo todo) {
 
@@ -74,7 +74,7 @@ public class ToDoServiceImpl implements ToDoService {
      * Returns an List of all ToDo instances related to
      * the provided Context instance.
      *
-     * @param Context Instance used for matching
+     * @param context Instance used for matching
      * @return a List of ToDo instances
      */
     public List findByContext(Context context) {

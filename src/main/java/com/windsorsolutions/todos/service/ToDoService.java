@@ -11,41 +11,23 @@ import org.springframework.stereotype.Service;
 /**
  * Provides a service for managing ToDo entities.
  */
-@Service
-public class ToDoService {
-
-    @Autowired
-    public ToDoRepository repository;
-
-    /**
-     * Creates a new ToDoService instance.
-     */
-    public ToDoService() {
-
-    }
+public interface ToDoService {
 
     /**
      * Persists the provided ToDo and returns a reference to the new,
      * persistent instance.
      *
      * @param todo Instance to be persisted
-     * @return Reference to the new, perisitent instance.
+     * @return Reference to the new, persistent instance.
      */
-    public ToDo save(ToDo todo) {
-
-	todo = repository.save(todo);
-	return(todo);
-    }
+    public ToDo save(ToDo todo);
 
     /**
      * Removes the provided instance from the persistent store.
      *
      * @param todo Instance to be removed
      */
-    public void delete(ToDo todo) {
-
-	repository.delete(todo.getId());
-    }
+    public void delete(ToDo todo);
 
     /**
      * Returns the instance with the matching unique ID.
@@ -53,18 +35,14 @@ public class ToDoService {
      * @param id Unique ID of the instance to fetch
      * @return ToDo instance with the matching unique ID
      */
-    public ToDo find(Long id) {
-	return(repository.findOne(id));
-    }
+    public ToDo find(Long id);
 
     /**
      * Returns an Iterable of all ToDo instances.
      *
      * @return an Iterable of ToDo instances.
      */
-    public Iterable findAll() {
-	return(repository.findAll());
-    }
+    public Iterable findAll();
 
     /**
      * Returns an Iterable of all ToDo instances related to
@@ -73,7 +51,5 @@ public class ToDoService {
      * @param context Instance used for matching
      * @return an Iterable of ToDo instances
      */
-    public Iterable findByContext(Context context) {
-	return(repository.findByContext(context));
-    }
+    public Iterable findByContext(Context context);
 }
