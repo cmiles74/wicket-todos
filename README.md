@@ -37,11 +37,11 @@ to run the integration tests, both of these tools must be available.
 
 Phantomjs has clear installation instructions on their website.
 
-  [Phantomjs Installation][http://phantomjs.org/download.html]
+  [Phantomjs Installation](http://phantomjs.org/download.html)
 
 Casperjs also has some great documentation.
 
-  [Casperjs Installation][http://casperjs.org/installation.html]
+  [Casperjs Installation](http://casperjs.org/installation.html)
 
 In my opinion, if you are comfortable with Nodejs and NPM then installing
 Phantomjs through NPM is fairly painless.
