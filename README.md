@@ -3,9 +3,9 @@ To-Do Sample Spring, JPA and Wicket Application
 
 This is a sample application meant to demonstrate the structure of a
 web-based application that leverages the [Spring Framework][1], the
-[Java Persistence API (JPA)][2] and [Wicket][3]. To this end, it does
-it's best to stay simple while still demonstrating some best
-practices.
+[Java Persistence API (JPA)][2] and [Wicket][3]. To support integration
+testing, Casperjs is used. To this end, it does it's best to stay simple
+while still demonstrating some best practices.
 
 ## Data Source Configuration
 
@@ -30,31 +30,30 @@ file.
 
 ## Integration Testing
 
-This project uses the Selenium library to do some simple browser
-integration testing. Presently these test utilize the Chrome browser
-through the Chrome WebDriver for Selenium. In order to run these tests
-you must first have both the Chrome web browser and the Chrome
-WebDriver installed.
+This project uses Casperjs to do some involved integration testing. The
+Casperjs project provides an easy-to-use wrapper around the Phantomjs tool.
+Phantomjs provides a programmatic and headless WebKit-based browser. In order
+to run the integration tests, both of these tools must be available.
 
-The Chrome web browser can be downloaded from Google.
+Phantomjs has clear installation instructions on their website.
 
-  [Google Chrome][http://www.google.com/chrome]
+  [Phantomjs Installation][http://phantomjs.org/download.html]
 
-The Chrome WebDriver is available on Google Code.
+Casperjs also has some great documentation.
 
-  [Google Chrome Selenium WebDriver][http://code.gooogle.com/p/selenium/wiki/ChromeDriver]
+  [Casperjs Installation][http://casperjs.org/installation.html]
 
-The Chrome WebDriver should be smart enough to find the location of
-the Chrome browser binary.
+In my opinion, if you are comfortable with Nodejs and NPM then installing
+Phantomjs through NPM is fairly painless.
 
 To run the integration tests, invoke maven as follows:
 
-    mvn verify
+    mvn -Dspring.profiles.active="test" verify
 
-The "verify" target will run both the regular suite of unit tests and
-the integration tests. The integration tests will be run under the
-"failsafe" Maven test runner; this will ensure that Selenium is
-correctly shutdown in case of failure.
+First, we indicate to Spring that we'd like to use the in-memory "test"
+database configuration. The "verify" target will then run both the regular
+suite of unit tests and the integration tests. The output of the integration
+tests can be found in the "log.xml" file.
 
 [1]: http://www.springframework.org
 [2]: http://en.wikipedia.org/wiki/Java_Peristence_API
