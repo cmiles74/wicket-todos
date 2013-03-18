@@ -138,6 +138,7 @@ public class ToDoHomePage extends WebPage {
                         final Context context = listItem.getModelObject();
                         listItem.add(new Label("name", context.getName()));
                         listItem.add(new Label("description", context.getDescription()));
+                        listItem.setMarkupId("context" + context.getId());
 
                         // fetch our to-do items
                         LoadableDetachableModel todoListModel =

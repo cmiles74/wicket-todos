@@ -4,7 +4,7 @@ To-Do Sample Spring, JPA and Wicket Application
 This is a sample application meant to demonstrate the structure of a
 web-based application that leverages the [Spring Framework][1], the
 [Java Persistence API (JPA)][2] and [Wicket][3]. To support integration
-testing, Casperjs is used. To this end, it does it's best to stay simple
+testing, PhantomJS is used. To this end, it does it's best to stay simple
 while still demonstrating some best practices.
 
 ## Data Source Configuration
@@ -30,30 +30,27 @@ file.
 
 ## Integration Testing
 
-This project uses Casperjs to do some involved integration testing. The
-Casperjs project provides an easy-to-use wrapper around the Phantomjs tool.
-Phantomjs provides a programmatic and headless WebKit-based browser. In order
-to run the integration tests, both of these tools must be available.
+This project uses Selenium with WebDriver (via GhostDriver) over PhantomJS to
+perform integration testing. At this time there is a known bug in GhostDriver
+that prevents switching from frame to frame, this will cause our tests to
+fail. This change will be integrated into PhantomJS but in the meantime, you will
+need to compile your own version. Detailed information on how to do so are
+provided on the GhostDriver project page.
 
-Phantomjs has clear installation instructions on their website.
+  [GhostDriver Project](https://github.com/detro/ghostdriver)
+
+Phantomjs has clear installation instructions on their website as well as
+documentation on how to compile from source.
 
   [Phantomjs Installation](http://phantomjs.org/download.html)
 
-Casperjs also has some great documentation.
-
-  [Casperjs Installation](http://casperjs.org/installation.html)
-
-In my opinion, if you are comfortable with Nodejs and NPM then installing
-Phantomjs through NPM is fairly painless.
-
 To run the integration tests, invoke maven as follows:
 
-    mvn -Dspring.profiles.active="test" verify
+    mvn verify
 
-First, we indicate to Spring that we'd like to use the in-memory "test"
-database configuration. The "verify" target will then run both the regular
-suite of unit tests and the integration tests. The output of the integration
-tests can be found in the "log.xml" file.
+The "verify" target will then run both the regular suite of unit tests and the
+integration tests. The output of the integration tests can be found in the
+"log.xml" file.
 
 [1]: http://www.springframework.org
 [2]: http://en.wikipedia.org/wiki/Java_Peristence_API
