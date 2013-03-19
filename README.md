@@ -44,6 +44,11 @@ documentation on how to compile from source.
 
   [Phantomjs Installation](http://phantomjs.org/download.html)
 
+If you're running on 64 bit Linux or Windows, you can the build I compiled myself.
+
+  + [AMD 64 Linux][http://db.tt/7813QJOz]
+  + [AMD 64 Windows][http://db.tt/ivJStpk8]
+
 To run the integration tests, invoke maven as follows:
 
     mvn verify
