@@ -31,7 +31,7 @@ file.
 ## Integration Testing
 
 This project uses Selenium with WebDriver (via GhostDriver) over PhantomJS to
-perform integration testing. At this time there is (a known bug in GhostDriver)[4]
+perform integration testing. At this time there is [a known bug in GhostDriver][4]
 that prevents switching from frame to frame, this will cause our tests to
 fail. This change will be integrated into PhantomJS but in the meantime, you will
 need to compile your own version. Detailed information on how to do so are
