@@ -31,7 +31,7 @@ file.
 ## Integration Testing
 
 This project uses Selenium with WebDriver (via GhostDriver) over PhantomJS to
-perform integration testing. At this time there is a known bug in GhostDriver
+perform integration testing. At this time there is (a known bug in GhostDriver)[4]
 that prevents switching from frame to frame, this will cause our tests to
 fail. This change will be integrated into PhantomJS but in the meantime, you will
 need to compile your own version. Detailed information on how to do so are
@@ -55,3 +55,4 @@ integration tests. The output of the integration tests can be found in the
 [1]: http://www.springframework.org
 [2]: http://en.wikipedia.org/wiki/Java_Peristence_API
 [3]: http://wicket.apache.org
+[4]: https://github.com/detro/ghostdriver/issues/194
